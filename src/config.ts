@@ -1,6 +1,6 @@
-import { figue } from 'figue';
+import { defineConfig } from 'figue';
 
-export const config = figue({
+export const { config } = defineConfig({
   app: {
     version: {
       doc: 'Application current version',
@@ -65,11 +65,10 @@ export const config = figue({
     default: false,
     env: 'VITE_SHOW_SPONSOR_BANNER',
   },
-})
-  .loadEnv({
+}, {
+  envSource: {
     ...import.meta.env,
     // Because the string 'import.meta.env.PACKAGE_VERSION' is statically replaced during build time (see 'define' in vite.config.ts)
     PACKAGE_VERSION: import.meta.env.PACKAGE_VERSION,
-  })
-  .validate()
-  .getConfig();
+  },
+});
