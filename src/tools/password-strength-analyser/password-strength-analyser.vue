@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { getPasswordCrackTimeEstimation } from './password-strength-analyser.service';
+  import { getPasswordCrackTimeEstimation } from './password-strength-analyser.service';
 
-const password = ref('');
-const crackTimeEstimation = computed(() => getPasswordCrackTimeEstimation({ password: password.value }));
+  const password = ref('');
+  const crackTimeEstimation = computed(() => getPasswordCrackTimeEstimation({ password: password.value }));
 
-const details = computed(() => [
-  {
-    label: 'Password length:',
-    value: crackTimeEstimation.value.passwordLength,
-  },
-  {
-    label: 'Entropy:',
-    value: Math.round(crackTimeEstimation.value.entropy * 100) / 100,
-  },
-  {
-    label: 'Character set size:',
-    value: crackTimeEstimation.value.charsetLength,
-  },
-  {
-    label: 'Score:',
-    value: `${Math.round(crackTimeEstimation.value.score * 100)} / 100`,
-  },
-]);
+  const _details = computed(() => [
+    {
+      label: 'Password length:',
+      value: crackTimeEstimation.value.passwordLength,
+    },
+    {
+      label: 'Entropy:',
+      value: Math.round(crackTimeEstimation.value.entropy * 100) / 100,
+    },
+    {
+      label: 'Character set size:',
+      value: crackTimeEstimation.value.charsetLength,
+    },
+    {
+      label: 'Score:',
+      value: `${Math.round(crackTimeEstimation.value.score * 100)} / 100`,
+    },
+  ]);
 </script>
 
 <template>

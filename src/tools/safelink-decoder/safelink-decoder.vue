@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import { decodeSafeLinksURL } from './safelink-decoder.service';
-import TextareaCopyable from '@/components/TextareaCopyable.vue';
+  import { decodeSafeLinksURL } from './safelink-decoder.service';
 
-const inputSafeLinkUrl = ref('');
-const outputDecodedUrl = computed(() => {
-  try {
-    return decodeSafeLinksURL(inputSafeLinkUrl.value);
-  }
-  catch (e: any) {
-    return e.toString();
-  }
-});
+  const inputSafeLinkUrl = ref('');
+  const _outputDecodedUrl = computed(() => {
+    try {
+      return decodeSafeLinksURL(inputSafeLinkUrl.value);
+    } catch (e: any) {
+      return e.toString();
+    }
+  });
 </script>
 
 <template>

@@ -25,10 +25,7 @@ async function createMissingLocaleFile({ localeKey }) {
   const fileName = `${localeKey}.yml`;
 
   const { filePaths: localesDirs } = await getPathsFromGlobs({
-    patterns: [
-      'locales',
-      'src/tools/*/locales',
-    ],
+    patterns: ['locales', 'src/tools/*/locales'],
     onlyFiles: false,
   });
 
@@ -46,16 +43,13 @@ async function createMissingLocaleFile({ localeKey }) {
 }
 
 const { filePaths } = await getPathsFromGlobs({
-  patterns: [
-    'locales/*.yml',
-    'src/tools/*/locales/*.yml',
-  ],
+  patterns: ['locales/*.yml', 'src/tools/*/locales/*.yml'],
 });
 
 await Promise.all(
   _.chain(filePaths)
-    .map(filePath => getLocaleKey({ filePath }))
+    .map((filePath) => getLocaleKey({ filePath }))
     .uniq()
-    .map(localeKey => createMissingLocaleFile({ localeKey }))
+    .map((localeKey) => createMissingLocaleFile({ localeKey }))
     .value(),
 );

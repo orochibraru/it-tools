@@ -17,7 +17,9 @@ test.describe('Tool - Text to ASCII binary', () => {
   });
 
   test('Binary to text conversion', async ({ page }) => {
-    await page.getByTestId('binary-to-text-input').fill('01101001 01110100 00101101 01110100 01101111 01101111 01101100 01110011');
+    await page
+      .getByTestId('binary-to-text-input')
+      .fill('01101001 01110100 00101101 01110100 01101111 01101111 01101100 01110011');
     const text = await page.getByTestId('binary-to-text-output').inputValue();
 
     expect(text).toEqual('it-tools');

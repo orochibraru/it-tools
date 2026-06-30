@@ -1,47 +1,47 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core';
-import { useThemeVars } from 'naive-ui';
-import { RouterLink, useRoute } from 'vue-router';
-import MenuIconItem from './MenuIconItem.vue';
-import type { Tool, ToolCategory } from '@/tools/tools.types';
+  import { useStorage } from '@vueuse/core';
+  import { useThemeVars } from 'naive-ui';
+  import { RouterLink, useRoute } from 'vue-router';
+  import type { Tool, ToolCategory } from '@/tools/tools.types';
+  import MenuIconItem from './MenuIconItem.vue';
 
-const props = withDefaults(defineProps<{ toolsByCategory?: ToolCategory[] }>(), { toolsByCategory: () => [] });
-const { toolsByCategory } = toRefs(props);
-const route = useRoute();
+  const props = withDefaults(defineProps<{ toolsByCategory?: ToolCategory[] }>(), { toolsByCategory: () => [] });
+  const { toolsByCategory } = toRefs(props);
+  const _route = useRoute();
 
-const makeLabel = (tool: Tool) => () => h(RouterLink, { to: tool.path }, { default: () => tool.name });
-const makeIcon = (tool: Tool) => () => h(MenuIconItem, { tool });
+  const makeLabel = (tool: Tool) => () => h(RouterLink, { to: tool.path }, { default: () => tool.name });
+  const makeIcon = (tool: Tool) => () => h(MenuIconItem, { tool });
 
-const collapsedCategories = useStorage<Record<string, boolean>>(
-  'menu-tool-option:collapsed-categories',
-  {},
-  undefined,
-  {
-    deep: true,
-    serializer: {
-      read: v => (v ? JSON.parse(v) : null),
-      write: v => JSON.stringify(v),
+  const collapsedCategories = useStorage<Record<string, boolean>>(
+    'menu-tool-option:collapsed-categories',
+    {},
+    undefined,
+    {
+      deep: true,
+      serializer: {
+        read: (v) => (v ? JSON.parse(v) : null),
+        write: (v) => JSON.stringify(v),
+      },
     },
-  },
-);
+  );
 
-function toggleCategoryCollapse({ name }: { name: string }) {
-  collapsedCategories.value[name] = !collapsedCategories.value[name];
-}
+  function _toggleCategoryCollapse({ name }: { name: string }) {
+    collapsedCategories.value[name] = !collapsedCategories.value[name];
+  }
 
-const menuOptions = computed(() =>
-  toolsByCategory.value.map(({ name, components }) => ({
-    name,
-    isCollapsed: collapsedCategories.value[name],
-    tools: components.map(tool => ({
-      label: makeLabel(tool),
-      icon: makeIcon(tool),
-      key: tool.path,
+  const _menuOptions = computed(() =>
+    toolsByCategory.value.map(({ name, components }) => ({
+      name,
+      isCollapsed: collapsedCategories.value[name],
+      tools: components.map((tool) => ({
+        label: makeLabel(tool),
+        icon: makeIcon(tool),
+        key: tool.path,
+      })),
     })),
-  })),
-);
+  );
 
-const themeVars = useThemeVars();
+  const _themeVars = useThemeVars();
 </script>
 
 <template>

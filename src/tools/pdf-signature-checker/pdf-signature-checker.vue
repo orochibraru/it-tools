@@ -1,27 +1,25 @@
 <script setup lang="ts">
-import verifyPDF from 'pdf-signature-reader';
-import type { SignatureInfo } from './pdf-signature-checker.types';
-import { formatBytes } from '@/utils/convert';
+  import verifyPDF from 'pdf-signature-reader';
+  import type { SignatureInfo } from './pdf-signature-checker.types';
 
-const signatures = ref<SignatureInfo[]>([]);
-const status = ref<'idle' | 'parsed' | 'error' | 'loading'>('idle');
-const file = ref<File | null>(null);
+  const signatures = ref<SignatureInfo[]>([]);
+  const status = ref<'idle' | 'parsed' | 'error' | 'loading'>('idle');
+  const file = ref<File | null>(null);
 
-async function onVerifyClicked(uploadedFile: File) {
-  file.value = uploadedFile;
-  const fileBuffer = await uploadedFile.arrayBuffer();
+  async function _onVerifyClicked(uploadedFile: File) {
+    file.value = uploadedFile;
+    const fileBuffer = await uploadedFile.arrayBuffer();
 
-  status.value = 'loading';
-  try {
-    const { signatures: parsedSignatures } = verifyPDF(fileBuffer);
-    signatures.value = parsedSignatures;
-    status.value = 'parsed';
+    status.value = 'loading';
+    try {
+      const { signatures: parsedSignatures } = verifyPDF(fileBuffer);
+      signatures.value = parsedSignatures;
+      status.value = 'parsed';
+    } catch (_e) {
+      signatures.value = [];
+      status.value = 'error';
+    }
   }
-  catch (e) {
-    signatures.value = [];
-    status.value = 'error';
-  }
-}
 </script>
 
 <template>

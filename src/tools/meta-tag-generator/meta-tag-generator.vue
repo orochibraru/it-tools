@@ -1,53 +1,52 @@
 <script setup lang="ts">
-import { generateMeta } from '@it-tools/oggen';
-import _ from 'lodash';
-import { image, ogSchemas, twitter, website } from './og-schemas';
-import type { OGSchemaType, OGSchemaTypeElementSelect } from './OGSchemaType.type';
-import TextareaCopyable from '@/components/TextareaCopyable.vue';
+  import { generateMeta } from '@it-tools/oggen';
+  import _ from 'lodash';
+  import type { OGSchemaType } from './OGSchemaType.type';
+  import { image, ogSchemas, twitter, website } from './og-schemas';
 
-// Since type guards do not work in template
+  // Since type guards do not work in template
 
-const metadata = ref<{ type: string; [k: string]: any }>({
-  'type': 'website',
-  'twitter:card': 'summary_large_image',
-});
+  const metadata = ref<{ type: string; [k: string]: any }>({
+    type: 'website',
+    'twitter:card': 'summary_large_image',
+  });
 
-watch(
-  () => ref(metadata.value.type),
-  (_ignored, prevSection) => {
-    const section = ogSchemas[prevSection.value];
+  watch(
+    () => ref(metadata.value.type),
+    (_ignored, prevSection) => {
+      const section = ogSchemas[prevSection.value];
 
-    if (!section) {
-      return;
+      if (!section) {
+        return;
+      }
+
+      section.elements.forEach(({ key }) => {
+        metadata.value[key] = '';
+      });
+    },
+  );
+
+  const _sections = computed(() => {
+    const secs: OGSchemaType[] = [website, image, twitter];
+    const additionalSchema = ogSchemas[metadata.value.type];
+
+    if (additionalSchema) {
+      secs.push(additionalSchema);
     }
 
-    section.elements.forEach(({ key }) => {
-      metadata.value[key] = '';
-    });
-  },
-);
+    return secs;
+  });
 
-const sections = computed(() => {
-  const secs: OGSchemaType[] = [website, image, twitter];
-  const additionalSchema = ogSchemas[metadata.value.type];
+  const _metaTags = computed(() => {
+    const twitterMeta = _.chain(metadata.value)
+      .pickBy((_value, k) => k.startsWith('twitter:'))
+      .mapKeys((_value, k) => k.replace(/^twitter:/, ''))
+      .value();
 
-  if (additionalSchema) {
-    secs.push(additionalSchema);
-  }
+    const otherMeta = _.pickBy(metadata.value, (_value, k) => !k.startsWith('twitter:'));
 
-  return secs;
-});
-
-const metaTags = computed(() => {
-  const twitterMeta = _.chain(metadata.value)
-    .pickBy((_value, k) => k.startsWith('twitter:'))
-    .mapKeys((_value, k) => k.replace(/^twitter:/, ''))
-    .value();
-
-  const otherMeta = _.pickBy(metadata.value, (_value, k) => !k.startsWith('twitter:'));
-
-  return generateMeta({ ...otherMeta, twitter: twitterMeta }, { generateTwitterCompatibleMeta: true });
-});
+    return generateMeta({ ...otherMeta, twitter: twitterMeta }, { generateTwitterCompatibleMeta: true });
+  });
 </script>
 
 <template>

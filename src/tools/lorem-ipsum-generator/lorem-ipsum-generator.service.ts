@@ -194,11 +194,11 @@ export function generateLoremIpsum({
   startWithLoremIpsum = true,
   asHTML = false,
 }: {
-  paragraphCount?: number
-  sentencePerParagraph?: number
-  wordCount?: number
-  startWithLoremIpsum?: boolean
-  asHTML?: boolean
+  paragraphCount?: number;
+  sentencePerParagraph?: number;
+  wordCount?: number;
+  startWithLoremIpsum?: boolean;
+  asHTML?: boolean;
 }) {
   const paragraphs = Array.from({ length: paragraphCount }).map(() =>
     Array.from({ length: sentencePerParagraph }).map(() => generateSentence(wordCount)),
@@ -209,8 +209,8 @@ export function generateLoremIpsum({
   }
 
   if (asHTML) {
-    return `<p>${paragraphs.map(s => s.join(' ')).join('</p>\n\n<p>')}</p>`;
+    return `<p>${paragraphs.map((s) => s.join(' ')).join('</p>\n\n<p>')}</p>`;
   }
 
-  return paragraphs.map(s => s.join(' ')).join('\n\n');
+  return paragraphs.map((s) => s.join(' ')).join('\n\n');
 }

@@ -1,106 +1,109 @@
 <script setup lang="ts">
-import _ from 'lodash';
+  import _ from 'lodash';
 
-import { useMediaRecorder } from './useMediaRecorder';
+  import { useMediaRecorder } from './useMediaRecorder';
 
-interface Media { type: 'image' | 'video'; value: string; createdAt: Date }
-
-const {
-  videoInputs: cameras,
-  audioInputs: microphones,
-  permissionGranted,
-  isSupported,
-  ensurePermissions,
-} = useDevicesList({
-  requestPermissions: true,
-  constraints: { video: true, audio: true },
-  onUpdated() {
-    refreshCurrentDevices();
-  },
-});
-
-const video = ref<HTMLVideoElement>();
-const medias = ref<Media[]>([]);
-const currentCamera = ref(cameras.value[0]?.deviceId);
-const currentMicrophone = ref(microphones.value[0]?.deviceId);
-const permissionCannotBePrompted = ref(false);
-
-const {
-  stream,
-  start,
-  stop,
-  enabled: isMediaStreamAvailable,
-} = useUserMedia({
-  constraints: computed(() => ({
-    video: { deviceId: currentCamera.value },
-    ...(currentMicrophone.value ? { audio: { deviceId: currentMicrophone.value } } : {}),
-  })),
-  autoSwitch: true,
-});
-
-const {
-  isRecordingSupported,
-  onRecordAvailable,
-  startRecording,
-  stopRecording,
-  pauseRecording,
-  recordingState,
-  resumeRecording,
-} = useMediaRecorder({
-  stream,
-});
-
-onRecordAvailable((value) => {
-  medias.value.unshift({ type: 'video', value, createdAt: new Date() });
-});
-
-function refreshCurrentDevices() {
-  if (_.isNil(currentCamera) || !cameras.value.find(i => i.deviceId === currentCamera.value)) {
-    currentCamera.value = cameras.value[0]?.deviceId;
+  interface Media {
+    type: 'image' | 'video';
+    value: string;
+    createdAt: Date;
   }
 
-  if (_.isNil(microphones) || !microphones.value.find(i => i.deviceId === currentMicrophone.value)) {
-    currentMicrophone.value = microphones.value[0]?.deviceId;
+  const {
+    videoInputs: cameras,
+    audioInputs: microphones,
+    permissionGranted,
+    isSupported,
+    ensurePermissions,
+  } = useDevicesList({
+    requestPermissions: true,
+    constraints: { video: true, audio: true },
+    onUpdated() {
+      refreshCurrentDevices();
+    },
+  });
+
+  const video = ref<HTMLVideoElement>();
+  const medias = ref<Media[]>([]);
+  const currentCamera = ref(cameras.value[0]?.deviceId);
+  const currentMicrophone = ref(microphones.value[0]?.deviceId);
+  const permissionCannotBePrompted = ref(false);
+
+  const {
+    stream,
+    start,
+    stop,
+    enabled: isMediaStreamAvailable,
+  } = useUserMedia({
+    constraints: computed(() => ({
+      video: { deviceId: currentCamera.value },
+      ...(currentMicrophone.value ? { audio: { deviceId: currentMicrophone.value } } : {}),
+    })),
+    autoSwitch: true,
+  });
+
+  const {
+    isRecordingSupported,
+    onRecordAvailable,
+    startRecording,
+    stopRecording,
+    pauseRecording,
+    recordingState,
+    resumeRecording,
+  } = useMediaRecorder({
+    stream,
+  });
+
+  onRecordAvailable((value) => {
+    medias.value.unshift({ type: 'video', value, createdAt: new Date() });
+  });
+
+  function refreshCurrentDevices() {
+    if (_.isNil(currentCamera) || !cameras.value.find((i) => i.deviceId === currentCamera.value)) {
+      currentCamera.value = cameras.value[0]?.deviceId;
+    }
+
+    if (_.isNil(microphones) || !microphones.value.find((i) => i.deviceId === currentMicrophone.value)) {
+      currentMicrophone.value = microphones.value[0]?.deviceId;
+    }
   }
-}
 
-function takeScreenshot() {
-  if (!video.value) {
-    return;
+  function _takeScreenshot() {
+    if (!video.value) {
+      return;
+    }
+
+    const canvas = document.createElement('canvas');
+    canvas.width = video.value.videoWidth;
+    canvas.height = video.value.videoHeight;
+    canvas.getContext('2d')?.drawImage(video.value, 0, 0);
+    const image = canvas.toDataURL('image/png');
+
+    medias.value.unshift({ type: 'image', value: image, createdAt: new Date() });
   }
 
-  const canvas = document.createElement('canvas');
-  canvas.width = video.value.videoWidth;
-  canvas.height = video.value.videoHeight;
-  canvas.getContext('2d')?.drawImage(video.value, 0, 0);
-  const image = canvas.toDataURL('image/png');
+  watchEffect(() => {
+    if (video.value && stream.value) {
+      video.value.srcObject = stream.value;
+    }
+  });
 
-  medias.value.unshift({ type: 'image', value: image, createdAt: new Date() });
-}
+  onBeforeUnmount(() => stop());
 
-watchEffect(() => {
-  if (video.value && stream.value) {
-    video.value.srcObject = stream.value;
+  async function _requestPermissions() {
+    try {
+      await ensurePermissions();
+    } catch (_e) {
+      permissionCannotBePrompted.value = true;
+    }
   }
-});
 
-onBeforeUnmount(() => stop());
-
-async function requestPermissions() {
-  try {
-    await ensurePermissions();
+  function _downloadMedia({ type, value, createdAt }: Media) {
+    const link = document.createElement('a');
+    link.href = value;
+    link.download = `${type}-${createdAt.getTime()}.${type === 'image' ? 'png' : 'webm'}`;
+    link.click();
   }
-  catch (e) {
-    permissionCannotBePrompted.value = true;
-  }
-}
-
-function downloadMedia({ type, value, createdAt }: Media) {
-  const link = document.createElement('a');
-  link.href = value;
-  link.download = `${type}-${createdAt.getTime()}.${type === 'image' ? 'png' : 'webm'}`;
-  link.click();
-}
 </script>
 
 <template>

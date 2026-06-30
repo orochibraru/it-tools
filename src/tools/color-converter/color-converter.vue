@@ -1,75 +1,75 @@
 <script setup lang="ts">
-import type { Colord } from 'colord';
-import { colord, extend } from 'colord';
-import _ from 'lodash';
-import cmykPlugin from 'colord/plugins/cmyk';
-import hwbPlugin from 'colord/plugins/hwb';
-import namesPlugin from 'colord/plugins/names';
-import lchPlugin from 'colord/plugins/lch';
-import { buildColorFormat } from './color-converter.models';
+  import type { Colord } from 'colord';
+  import { colord, extend } from 'colord';
+  import cmykPlugin from 'colord/plugins/cmyk';
+  import hwbPlugin from 'colord/plugins/hwb';
+  import lchPlugin from 'colord/plugins/lch';
+  import namesPlugin from 'colord/plugins/names';
+  import _ from 'lodash';
+  import { buildColorFormat } from './color-converter.models';
 
-extend([cmykPlugin, hwbPlugin, namesPlugin, lchPlugin]);
+  extend([cmykPlugin, hwbPlugin, namesPlugin, lchPlugin]);
 
-const formats = {
-  picker: buildColorFormat({
-    label: 'color picker',
-    format: (v: Colord) => v.toHex(),
-    type: 'color-picker',
-  }),
-  hex: buildColorFormat({
-    label: 'hex',
-    format: (v: Colord) => v.toHex(),
-    placeholder: 'e.g. #ff0000',
-  }),
-  rgb: buildColorFormat({
-    label: 'rgb',
-    format: (v: Colord) => v.toRgbString(),
-    placeholder: 'e.g. rgb(255, 0, 0)',
-  }),
-  hsl: buildColorFormat({
-    label: 'hsl',
-    format: (v: Colord) => v.toHslString(),
-    placeholder: 'e.g. hsl(0, 100%, 50%)',
-  }),
-  hwb: buildColorFormat({
-    label: 'hwb',
-    format: (v: Colord) => v.toHwbString(),
-    placeholder: 'e.g. hwb(0, 0%, 0%)',
-  }),
-  lch: buildColorFormat({
-    label: 'lch',
-    format: (v: Colord) => v.toLchString(),
-    placeholder: 'e.g. lch(53.24, 104.55, 40.85)',
-  }),
-  cmyk: buildColorFormat({
-    label: 'cmyk',
-    format: (v: Colord) => v.toCmykString(),
-    placeholder: 'e.g. cmyk(0, 100%, 100%, 0)',
-  }),
-  name: buildColorFormat({
-    label: 'name',
-    format: (v: Colord) => v.toName({ closest: true }) ?? 'Unknown',
-    placeholder: 'e.g. red',
-  }),
-};
+  const formats = {
+    picker: buildColorFormat({
+      label: 'color picker',
+      format: (v: Colord) => v.toHex(),
+      type: 'color-picker',
+    }),
+    hex: buildColorFormat({
+      label: 'hex',
+      format: (v: Colord) => v.toHex(),
+      placeholder: 'e.g. #ff0000',
+    }),
+    rgb: buildColorFormat({
+      label: 'rgb',
+      format: (v: Colord) => v.toRgbString(),
+      placeholder: 'e.g. rgb(255, 0, 0)',
+    }),
+    hsl: buildColorFormat({
+      label: 'hsl',
+      format: (v: Colord) => v.toHslString(),
+      placeholder: 'e.g. hsl(0, 100%, 50%)',
+    }),
+    hwb: buildColorFormat({
+      label: 'hwb',
+      format: (v: Colord) => v.toHwbString(),
+      placeholder: 'e.g. hwb(0, 0%, 0%)',
+    }),
+    lch: buildColorFormat({
+      label: 'lch',
+      format: (v: Colord) => v.toLchString(),
+      placeholder: 'e.g. lch(53.24, 104.55, 40.85)',
+    }),
+    cmyk: buildColorFormat({
+      label: 'cmyk',
+      format: (v: Colord) => v.toCmykString(),
+      placeholder: 'e.g. cmyk(0, 100%, 100%, 0)',
+    }),
+    name: buildColorFormat({
+      label: 'name',
+      format: (v: Colord) => v.toName({ closest: true }) ?? 'Unknown',
+      placeholder: 'e.g. red',
+    }),
+  };
 
-updateColorValue(colord('#1ea54c'));
+  updateColorValue(colord('#1ea54c'));
 
-function updateColorValue(value: Colord | undefined, omitLabel?: string) {
-  if (value === undefined) {
-    return;
-  }
-
-  if (!value.isValid()) {
-    return;
-  }
-
-  _.forEach(formats, ({ value: valueRef, format }, key) => {
-    if (key !== omitLabel) {
-      valueRef.value = format(value);
+  function updateColorValue(value: Colord | undefined, omitLabel?: string) {
+    if (value === undefined) {
+      return;
     }
-  });
-}
+
+    if (!value.isValid()) {
+      return;
+    }
+
+    _.forEach(formats, ({ value: valueRef, format }, key) => {
+      if (key !== omitLabel) {
+        valueRef.value = format(value);
+      }
+    });
+  }
 </script>
 
 <template>

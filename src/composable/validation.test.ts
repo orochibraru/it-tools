@@ -7,6 +7,7 @@ describe('useValidation', () => {
       expect(isFalsyOrHasThrown(() => false)).toBe(true);
       expect(isFalsyOrHasThrown(() => null)).toBe(true);
       expect(isFalsyOrHasThrown(() => undefined)).toBe(true);
+      // biome-ignore lint/suspicious/noEmptyBlockStatements: testing
       expect(isFalsyOrHasThrown(() => {})).toBe(true);
       expect(
         isFalsyOrHasThrown(() => {

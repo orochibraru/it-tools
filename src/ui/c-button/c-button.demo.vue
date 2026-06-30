@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import _ from 'lodash';
-
-const buttonVariants = ['basic', 'text'] as const;
-const buttonTypes = ['default', 'primary', 'warning', 'error'] as const;
-const buttonSizes = ['small', 'medium', 'large'] as const;
+  const _buttonVariants = ['basic', 'text'] as const;
+  const _buttonTypes = ['default', 'primary', 'warning', 'error'] as const;
+  const _buttonSizes = ['small', 'medium', 'large'] as const;
 </script>
 
 <template>

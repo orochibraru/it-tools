@@ -1,6 +1,6 @@
-import { mkdir, readFile, writeFile } from 'fs/promises';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const currentDirname = dirname(fileURLToPath(import.meta.url));
 

@@ -1,25 +1,25 @@
 <script setup lang="ts">
-import { formatXml, isValidXML } from './xml-formatter.service';
-import type { UseValidationRule } from '@/composable/validation';
+  import type { UseValidationRule } from '@/composable/validation';
+  import { formatXml, isValidXML } from './xml-formatter.service';
 
-const defaultValue = '<hello><world>foo</world><world>bar</world></hello>';
-const indentSize = useStorage('xml-formatter:indent-size', 2);
-const collapseContent = useStorage('xml-formatter:collapse-content', true);
+  const _defaultValue = '<hello><world>foo</world><world>bar</world></hello>';
+  const indentSize = useStorage('xml-formatter:indent-size', 2);
+  const collapseContent = useStorage('xml-formatter:collapse-content', true);
 
-function transformer(value: string) {
-  return formatXml(value, {
-    indentation: ' '.repeat(indentSize.value),
-    collapseContent: collapseContent.value,
-    lineSeparator: '\n',
-  });
-}
+  function _transformer(value: string) {
+    return formatXml(value, {
+      indentation: ' '.repeat(indentSize.value),
+      collapseContent: collapseContent.value,
+      lineSeparator: '\n',
+    });
+  }
 
-const rules: UseValidationRule<string>[] = [
-  {
-    validator: isValidXML,
-    message: 'Provided XML is not valid.',
-  },
-];
+  const _rules: UseValidationRule<string>[] = [
+    {
+      validator: isValidXML,
+      message: 'Provided XML is not valid.',
+    },
+  ];
 </script>
 
 <template>

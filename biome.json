@@ -1,0 +1,812 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": false
+  },
+  "formatter": {
+    "enabled": true,
+    "formatWithErrors": false,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 120,
+    "attributePosition": "auto",
+    "bracketSameLine": false,
+    "bracketSpacing": true,
+    "expand": "auto",
+    "useEditorconfig": true
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "none",
+      "complexity": {
+        "noAdjacentSpacesInRegex": "error",
+        "noArguments": "error",
+        "noBannedTypes": "error",
+        "noCommaOperator": "error",
+        "noExtraBooleanCast": "error",
+        "noUselessCatch": "error",
+        "noUselessConstructor": "off",
+        "noUselessEscapeInRegex": "off",
+        "noUselessLoneBlockStatements": "error",
+        "noUselessRename": "error",
+        "noUselessTernary": "error",
+        "noUselessTypeConstraint": "error",
+        "noUselessUndefinedInitialization": "error",
+        "noVoid": "error",
+        "useLiteralKeys": "error",
+        "useRegexLiterals": "error"
+      },
+      "correctness": {
+        "noConstAssign": "error",
+        "noConstantCondition": "warn",
+        "noDuplicateAttributes": "error",
+        "noEmptyCharacterClassInRegex": "error",
+        "noEmptyPattern": "error",
+        "noGlobalObjectCalls": "error",
+        "noInvalidConstructorSuper": "error",
+        "noInvalidUseBeforeDeclaration": "error",
+        "noPrecisionLoss": "error",
+        "noSelfAssign": "error",
+        "noSwitchDeclarations": "error",
+        "noUndeclaredVariables": "error",
+        "noUnreachable": "error",
+        "noUnreachableSuper": "error",
+        "noUnsafeFinally": "error",
+        "noUnusedImports": "error",
+        "noUnusedInstantiation": "error",
+        "noUnusedVariables": "warn",
+        "noVueDuplicateKeys": "off",
+        "noVueReservedKeys": "error",
+        "noVueReservedProps": "error",
+        "noVueVIfWithVFor": "error",
+        "useIsNan": "error",
+        "useValidTypeof": "error",
+        "useVueVForKey": "error",
+        "useVueValidTemplateRoot": "error",
+        "useVueValidVBind": "error",
+        "useVueValidVCloak": "error",
+        "useVueValidVElse": "error",
+        "useVueValidVElseIf": "error",
+        "useVueValidVHtml": "error",
+        "useVueValidVIf": "error",
+        "useVueValidVOn": "error",
+        "useVueValidVOnce": "error",
+        "useVueValidVPre": "error",
+        "useVueValidVText": "error"
+      },
+      "security": {
+        "noGlobalEval": "error"
+      },
+      "style": {
+        "noCommonJs": "error",
+        "noMultilineString": "error",
+        "noNamespace": "error",
+        "noNonNullAssertion": "off",
+        "noParameterAssign": "off",
+        "noRestrictedGlobals": {
+          "level": "error",
+          "options": {
+            "deniedGlobals": {
+              "self": "Use `globalThis` instead.",
+              "global": "Use `globalThis` instead."
+            }
+          }
+        },
+        "noRestrictedImports": "error",
+        "noYodaExpression": "error",
+        "useArrayLiterals": "error",
+        "useAsConstAssertion": "error",
+        "useBlockStatements": "error",
+        "useConsistentBuiltinInstantiation": "error",
+        "useConsistentMemberAccessibility": "off",
+        "useConsistentTypeDefinitions": "error",
+        "useConst": "error",
+        "useExponentiationOperator": "error",
+        "useNodejsImportProtocol": "error",
+        "useNumberNamespace": "error",
+        "useSingleVarDeclarator": "error",
+        "useSpreadOverApply": "error",
+        "useSymbolDescription": "error",
+        "useTemplate": "error",
+        "useThrowNewError": "error",
+        "useVueConsistentVBindStyle": "warn",
+        "useVueConsistentVOnStyle": "warn",
+        "useVueDefineMacrosOrder": "error",
+        "useVueHyphenatedAttributes": "warn"
+      },
+      "suspicious": {
+        "noAlert": "warn",
+        "noAsyncPromiseExecutor": "error",
+        "noCatchAssign": "error",
+        "noClassAssign": "error",
+        "noCompareNegZero": "error",
+        "noConsole": {
+          "level": "error",
+          "options": {
+            "allow": ["warn", "error"]
+          }
+        },
+        "noControlCharactersInRegex": "error",
+        "noDebugger": "error",
+        "noDoubleEquals": "error",
+        "noDuplicateCase": "error",
+        "noDuplicateClassMembers": "error",
+        "noDuplicateEnumValues": "error",
+        "noDuplicateObjectKeys": "error",
+        "noDuplicateParameters": "error",
+        "noEmptyBlockStatements": "error",
+        "noExplicitAny": "off",
+        "noExtraNonNullAssertion": "error",
+        "noFallthroughSwitchClause": "error",
+        "noFunctionAssign": "error",
+        "noGlobalAssign": "error",
+        "noImportAssign": "error",
+        "noIrregularWhitespace": "error",
+        "noMisleadingCharacterClass": "error",
+        "noMisleadingInstantiator": "error",
+        "noNonNullAssertedOptionalChain": "error",
+        "noOctalEscape": "error",
+        "noProto": "error",
+        "noPrototypeBuiltins": "error",
+        "noRedeclare": "error",
+        "noReturnAssign": "off",
+        "noSelfCompare": "error",
+        "noShadowRestrictedNames": "error",
+        "noSparseArray": "error",
+        "noTemplateCurlyInString": "error",
+        "noUnsafeDeclarationMerging": "error",
+        "noUnsafeNegation": "error",
+        "noUnusedExpressions": "error",
+        "noUselessRegexBackrefs": "error",
+        "noVar": "error",
+        "noVueArrowFuncInWatch": "error",
+        "noWith": "error",
+        "useAwait": "off",
+        "useDefaultSwitchClauseLast": "error",
+        "useErrorMessage": "error",
+        "useIsArray": "error",
+        "useIterableCallbackReturn": {
+          "level": "error",
+          "options": {}
+        }
+      }
+    },
+    "includes": [
+      "**",
+      "**/*.min.*",
+      "**/*.d.ts",
+      "**/CHANGELOG.md",
+      "**/dist",
+      "**/LICENSE*",
+      "**/output",
+      "**/out",
+      "**/coverage",
+      "**/public",
+      "**/temp",
+      "**/package-lock.json",
+      "**/pnpm-lock.yaml",
+      "**/yarn.lock",
+      "**/__snapshots__",
+      "**/*.css",
+      "**/*.png",
+      "**/*.ico",
+      "**/*.toml",
+      "**/*.patch",
+      "**/*.txt",
+      "**/*.crt",
+      "**/*.key",
+      "**/Dockerfile",
+      "!**/.github",
+      "!**/.vitepress",
+      "!**/.vscode",
+      "**/.vitepress/cache"
+    ]
+  },
+  "javascript": {
+    "formatter": {
+      "jsxQuoteStyle": "double",
+      "quoteProperties": "asNeeded",
+      "trailingCommas": "all",
+      "semicolons": "always",
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "quoteStyle": "single",
+      "attributePosition": "auto",
+      "bracketSpacing": true
+    },
+    "globals": [
+      "debouncedRef",
+      "useActiveElement",
+      "useArrayFind",
+      "useElementByPoint",
+      "debouncedWatch",
+      "useCssModule",
+      "useEventListener",
+      "useGamepad",
+      "useDebouncedRefHistory",
+      "useKeyModifier",
+      "controlledComputed",
+      "useArrayReduce",
+      "tryOnMounted",
+      "useScriptTag",
+      "usePreferredDark",
+      "useMediaQuery",
+      "refDebounced",
+      "refDefault",
+      "useFullscreen",
+      "useLocalStorage",
+      "useLoadingBar",
+      "useDebounce",
+      "createEventHook",
+      "defineAsyncComponent",
+      "useTimeAgo",
+      "useDeviceMotion",
+      "nextTick",
+      "useScrollLock",
+      "refAutoReset",
+      "useTimeoutFn",
+      "useCloned",
+      "computed",
+      "usePreferredColorScheme",
+      "pausableWatch",
+      "useIdle",
+      "useDark",
+      "useScreenOrientation",
+      "refThrottled",
+      "onErrorCaptured",
+      "useTransition",
+      "usePrevious",
+      "useOnline",
+      "useFileSystemAccess",
+      "getCurrentInstance",
+      "useDialog",
+      "autoResetRef",
+      "useElementBounding",
+      "useFocus",
+      "useSpeechSynthesis",
+      "useArrayFindIndex",
+      "watchPostEffect",
+      "window",
+      "useInfiniteScroll",
+      "createUnrefFn",
+      "until",
+      "useLink",
+      "onBeforeRouteUpdate",
+      "isDefined",
+      "watchDebounced",
+      "Ref",
+      "useSwipe",
+      "syncRefs",
+      "useManualRefHistory",
+      "useUserMedia",
+      "tryOnBeforeUnmount",
+      "useSorted",
+      "watchSyncEffect",
+      "useWindowSize",
+      "useDraggable",
+      "useThrottleFn",
+      "useIntervalFn",
+      "useNavigatorLanguage",
+      "useStorageAsync",
+      "usePreferredContrast",
+      "defineComponent",
+      "useTimeoutPoll",
+      "useToNumber",
+      "onClickOutside",
+      "useElementHover",
+      "useEventBus",
+      "useElementVisibility",
+      "createReactiveFn",
+      "reactiveComputed",
+      "createGlobalState",
+      "useArraySome",
+      "onScopeDispose",
+      "useTemplateRefsList",
+      "shallowRef",
+      "useBrowserLocation",
+      "useTextDirection",
+      "useVibrate",
+      "useMousePressed",
+      "useVirtualList",
+      "syncRef",
+      "watchDeep",
+      "useWebSocket",
+      "watchArray",
+      "InjectionKey",
+      "useStyleTag",
+      "useThrottledRefHistory",
+      "watchImmediate",
+      "useDevicesList",
+      "useArrayFindLast",
+      "usePreferredLanguages",
+      "useVModel",
+      "reactify",
+      "navigator",
+      "useRafFn",
+      "toRefs",
+      "useMediaControls",
+      "useImage",
+      "useDateFormat",
+      "onUpdated",
+      "watchAtMost",
+      "onBeforeMount",
+      "extendRef",
+      "useBattery",
+      "useClipboard",
+      "useColorMode",
+      "useRoute",
+      "useSlots",
+      "reactivePick",
+      "useStorage",
+      "useToggle",
+      "readonly",
+      "useSessionStorage",
+      "onDeactivated",
+      "useArrayEvery",
+      "toRef",
+      "unrefElement",
+      "resolveUnref",
+      "useInterval",
+      "watchEffect",
+      "useShare",
+      "markRaw",
+      "useAttrs",
+      "useParentElement",
+      "onBeforeUpdate",
+      "watchTriggerable",
+      "reactifyObject",
+      "asyncComputed",
+      "onBeforeUnmount",
+      "useDocumentVisibility",
+      "isRef",
+      "refWithControl",
+      "useTitle",
+      "onMounted",
+      "eagerComputed",
+      "useTimestamp",
+      "EffectScope",
+      "useMouse",
+      "customRef",
+      "Component",
+      "tryOnScopeDispose",
+      "watch",
+      "toReactive",
+      "ComponentPublicInstance",
+      "useDeviceOrientation",
+      "whenever",
+      "useCssVars",
+      "useMessage",
+      "throttledRef",
+      "useMouseInElement",
+      "h",
+      "useNetwork",
+      "useObjectUrl",
+      "triggerRef",
+      "watchThrottled",
+      "useEyeDropper",
+      "useMutationObserver",
+      "useWebWorkerFn",
+      "getCurrentScope",
+      "useSupported",
+      "useTextSelection",
+      "makeDestructurable",
+      "tryOnUnmounted",
+      "onRenderTriggered",
+      "useI18n",
+      "useUrlSearchParams",
+      "createReusableTemplate",
+      "useBreakpoints",
+      "useMemory",
+      "computedEager",
+      "useToString",
+      "useFetch",
+      "PropType",
+      "useMounted",
+      "inject",
+      "resolveRef",
+      "useResizeObserver",
+      "onServerPrefetch",
+      "useFavicon",
+      "onRenderTracked",
+      "usePageLeave",
+      "useRefHistory",
+      "tryOnBeforeMount",
+      "useEventSource",
+      "isProxy",
+      "usePerformanceObserver",
+      "watchOnce",
+      "watchWithFilter",
+      "useCached",
+      "useGeolocation",
+      "useArrayDifference",
+      "ComputedRef",
+      "watchIgnorable",
+      "useWakeLock",
+      "useWebNotification",
+      "throttledWatch",
+      "useFocusWithin",
+      "useDropZone",
+      "useDebounceFn",
+      "useDevicePixelRatio",
+      "useCounter",
+      "useNow",
+      "computedInject",
+      "reactive",
+      "onUnmounted",
+      "createInjectionState",
+      "useTextareaAutosize",
+      "useScreenSafeArea",
+      "createApp",
+      "createTemplatePromise",
+      "useIntersectionObserver",
+      "useArrayIncludes",
+      "useAsyncState",
+      "useRouter",
+      "useStepper",
+      "controlledRef",
+      "useArrayUnique",
+      "useAnimate",
+      "useWebWorker",
+      "reactiveOmit",
+      "useConfirmDialog",
+      "useElementSize",
+      "useOffsetPagination",
+      "useTimeout",
+      "onActivated",
+      "useArrayFilter",
+      "onStartTyping",
+      "useCssVar",
+      "useFps",
+      "useBase64",
+      "onBeforeRouteLeave",
+      "useMagicKeys",
+      "onLongPress",
+      "useCycleList",
+      "toValue",
+      "useThrottle",
+      "usePointer",
+      "useArrayMap",
+      "usePermission",
+      "watchPausable",
+      "effectScope",
+      "toRaw",
+      "isReadonly",
+      "useCurrentElement",
+      "onKeyStroke",
+      "useBluetooth",
+      "computedAsync",
+      "templateRef",
+      "usePointerLock",
+      "computedWithControl",
+      "useLastChanged",
+      "useSpeechRecognition",
+      "useBroadcastChannel",
+      "shallowReactive",
+      "unref",
+      "useDisplayMedia",
+      "createSharedComposable",
+      "document",
+      "useScroll",
+      "useParallax",
+      "useAsyncQueue",
+      "useMemoize",
+      "useNotification",
+      "provide",
+      "useVModels",
+      "useWindowFocus",
+      "ref",
+      "usePointerSwipe",
+      "useFileDialog",
+      "isReactive",
+      "VNode",
+      "shallowReadonly",
+      "usePreferredReducedMotion",
+      "useWindowScroll",
+      "ignorableWatch",
+      "useArrayJoin",
+      "resolveComponent"
+    ]
+  },
+  "html": {
+    "formatter": {
+      "indentScriptAndStyle": true,
+      "selfCloseVoidElements": "always"
+    }
+  },
+  "overrides": [
+    {
+      "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useConst": "off",
+            "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.vue"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUndeclaredVariables": "off",
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.json", "*.json5", "*.jsonc"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.yaml", "*.yml"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["package.json"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.d.ts"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.js", "*.cjs", "*.jsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noCommonJs": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noVoid": "error"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["scripts/**/*.*", "cli.*"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.test.ts", "*.test.js", "*.spec.ts", "*.spec.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.md/*.*"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noInvalidUseBeforeDeclaration": "off",
+            "noUndeclaredVariables": "off",
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noCommonJs": "off",
+            "noNamespace": "off",
+            "noRestrictedImports": "off"
+          },
+          "suspicious": {
+            "noAlert": "off",
+            "noConsole": "off",
+            "noRedeclare": "off",
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.json", "*.json5", "*.jsonc"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.yaml", "*.yml"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["package.json"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.d.ts"],
+      "linter": {
+        "rules": {}
+      }
+    },
+    {
+      "includes": ["*.js", "*.cjs", "*.jsx"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noCommonJs": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noVoid": "error"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["scripts/**/*.*", "cli.*"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.test.ts", "*.test.js", "*.spec.ts", "*.spec.js"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.md/*.*"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noInvalidUseBeforeDeclaration": "off",
+            "noUndeclaredVariables": "off",
+            "noUnusedImports": "off",
+            "noUnusedVariables": "off"
+          },
+          "style": {
+            "noCommonJs": "off",
+            "noNamespace": "off",
+            "noRestrictedImports": "off"
+          },
+          "suspicious": {
+            "noAlert": "off",
+            "noConsole": "off",
+            "noRedeclare": "off",
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.md"]
+    },
+    {
+      "includes": ["**/*.md/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUndeclaredVariables": "off",
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noArguments": "error"
+          },
+          "correctness": {
+            "noConstAssign": "off",
+            "noGlobalObjectCalls": "off",
+            "noInvalidConstructorSuper": "off",
+            "noSetterReturn": "off",
+            "noUndeclaredVariables": "off",
+            "noUnreachable": "off",
+            "noUnreachableSuper": "off"
+          },
+          "style": {
+            "useConst": "error",
+            "useSpreadOverApply": "error"
+          },
+          "suspicious": {
+            "noDuplicateClassMembers": "off",
+            "noDuplicateObjectKeys": "off",
+            "noDuplicateParameters": "off",
+            "noFunctionAssign": "off",
+            "noImportAssign": "off",
+            "noRedeclare": "off",
+            "noUnsafeNegation": "off",
+            "noVar": "error",
+            "useGetterReturn": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.json", "*.json5", "*.jsonc"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noUnusedExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["*.yaml", "*.yml"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noIrregularWhitespace": "off"
+          }
+        }
+      }
+    }
+  ],
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

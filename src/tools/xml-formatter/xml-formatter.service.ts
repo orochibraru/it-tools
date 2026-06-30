@@ -21,8 +21,7 @@ function isValidXML(rawXml: string): boolean {
   try {
     xmlFormat(cleanedRawXml);
     return true;
-  }
-  catch (e) {
+  } catch (_e) {
     return false;
   }
 }

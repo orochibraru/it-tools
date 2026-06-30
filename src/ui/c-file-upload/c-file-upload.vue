@@ -1,56 +1,59 @@
 <script lang="ts" setup>
-import _ from 'lodash';
+  import _ from 'lodash';
 
-const props = withDefaults(defineProps<{
-  multiple?: boolean
-  accept?: string
-  title?: string
-}>(), {
-  multiple: false,
-  accept: undefined,
-  title: 'Drag and drop files here, or click to select files',
-});
+  const props = withDefaults(
+    defineProps<{
+      multiple?: boolean;
+      accept?: string;
+      title?: string;
+    }>(),
+    {
+      multiple: false,
+      accept: undefined,
+      title: 'Drag and drop files here, or click to select files',
+    },
+  );
 
-const emit = defineEmits<{
-  (event: 'filesUpload', files: File[]): void
-  (event: 'fileUpload', file: File): void
-}>();
+  const emit = defineEmits<{
+    (event: 'filesUpload', files: File[]): void;
+    (event: 'fileUpload', file: File): void;
+  }>();
 
-const { multiple } = toRefs(props);
+  const { multiple } = toRefs(props);
 
-const isOverDropZone = ref(false);
+  const _isOverDropZone = ref(false);
 
-const fileInput = ref<HTMLInputElement | null>(null);
+  const fileInput = ref<HTMLInputElement | null>(null);
 
-function triggerFileInput() {
-  fileInput.value?.click();
-}
-
-function handleFileInput(event: Event) {
-  const files = (event.target as HTMLInputElement).files;
-
-  handleUpload(files);
-}
-
-function handleDrop(event: DragEvent) {
-  event.preventDefault();
-  const files = event.dataTransfer?.files;
-
-  handleUpload(files);
-}
-
-function handleUpload(files: FileList | null | undefined) {
-  if (_.isNil(files) || _.isEmpty(files)) {
-    return;
+  function _triggerFileInput() {
+    fileInput.value?.click();
   }
 
-  if (multiple.value) {
-    emit('filesUpload', Array.from(files));
-    return;
+  function _handleFileInput(event: Event) {
+    const files = (event.target as HTMLInputElement).files;
+
+    handleUpload(files);
   }
 
-  emit('fileUpload', files[0]);
-}
+  function _handleDrop(event: DragEvent) {
+    event.preventDefault();
+    const files = event.dataTransfer?.files;
+
+    handleUpload(files);
+  }
+
+  function handleUpload(files: FileList | null | undefined) {
+    if (_.isNil(files) || _.isEmpty(files)) {
+      return;
+    }
+
+    if (multiple.value) {
+      emit('filesUpload', Array.from(files));
+      return;
+    }
+
+    emit('fileUpload', files[0]);
+  }
 </script>
 
 <template>

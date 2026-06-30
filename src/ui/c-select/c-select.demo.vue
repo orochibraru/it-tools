@@ -1,14 +1,14 @@
 <script lang="ts" setup>
-const optionsA = [
-  { label: 'Option A', value: 'a' },
-  { label: 'Option B', value: 'b' },
-  { label: 'Option C', value: 'c' },
-];
+  const _optionsA = [
+    { label: 'Option A', value: 'a' },
+    { label: 'Option B', value: 'b' },
+    { label: 'Option C', value: 'c' },
+  ];
 
-const optionsBig = Array.from({ length: 1000 }, (_, i) => ({ label: `Option ${i}`, value: i }));
+  const _optionsBig = Array.from({ length: 1000 }, (_, i) => ({ label: `Option ${i}`, value: i }));
 
-const sizes = ['small', 'medium', 'large'] as const;
-const value = ref('');
+  const _sizes = ['small', 'medium', 'large'] as const;
+  const _value = ref('');
 </script>
 
 <template>

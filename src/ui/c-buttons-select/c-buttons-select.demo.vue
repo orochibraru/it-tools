@@ -1,17 +1,17 @@
 <script setup lang="ts">
-const optionsA = [
-  { label: 'Option A', value: 'a' },
-  { label: 'Option B', value: 'b', tooltip: 'This is a tooltip' },
-  { label: 'Option C', value: 'c' },
-];
+  const _optionsA = [
+    { label: 'Option A', value: 'a' },
+    { label: 'Option B', value: 'b', tooltip: 'This is a tooltip' },
+    { label: 'Option C', value: 'c' },
+  ];
 
-const optionB = {
-  'Option A': 'a',
-  'Option B': 'b',
-  'Option C': 'c',
-};
+  const _optionB = {
+    'Option A': 'a',
+    'Option B': 'b',
+    'Option C': 'c',
+  };
 
-const valueA = ref('a');
+  const _valueA = ref('a');
 </script>
 
 <template>

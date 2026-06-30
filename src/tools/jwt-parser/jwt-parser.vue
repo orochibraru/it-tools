@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import { decodeJwt } from './jwt-parser.service';
-import { useValidation } from '@/composable/validation';
-import { isNotThrowing } from '@/utils/boolean';
-import { withDefaultOnError } from '@/utils/defaults';
+  import { useValidation } from '@/composable/validation';
+  import { isNotThrowing } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
+  import { decodeJwt } from './jwt-parser.service';
 
-const rawJwt = ref(
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-);
+  const rawJwt = ref(
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  );
 
-const decodedJWT = computed(() =>
-  withDefaultOnError(() => decodeJwt({ jwt: rawJwt.value }), { header: [], payload: [] }),
-);
+  const _decodedJWT = computed(() =>
+    withDefaultOnError(() => decodeJwt({ jwt: rawJwt.value }), { header: [], payload: [] }),
+  );
 
-const sections = [
-  { key: 'header', title: 'Header' },
-  { key: 'payload', title: 'Payload' },
-] as const;
+  const _sections = [
+    { key: 'header', title: 'Header' },
+    { key: 'payload', title: 'Payload' },
+  ] as const;
 
-const validation = useValidation({
-  source: rawJwt,
-  rules: [
-    {
-      validator: value => value.length > 0 && isNotThrowing(() => decodeJwt({ jwt: rawJwt.value })),
-      message: 'Invalid JWT',
-    },
-  ],
-});
+  const _validation = useValidation({
+    source: rawJwt,
+    rules: [
+      {
+        validator: (value) => value.length > 0 && isNotThrowing(() => decodeJwt({ jwt: rawJwt.value })),
+        message: 'Invalid JWT',
+      },
+    ],
+  });
 </script>
 
 <template>

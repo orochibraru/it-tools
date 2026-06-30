@@ -1,83 +1,85 @@
 <script setup lang="ts">
-import {
-  chineseSimplifiedWordList,
-  chineseTraditionalWordList,
-  czechWordList,
-  englishWordList,
-  entropyToMnemonic,
-  frenchWordList,
-  generateEntropy,
-  italianWordList,
-  japaneseWordList,
-  koreanWordList,
-  mnemonicToEntropy,
-  portugueseWordList,
-  spanishWordList,
-} from '@it-tools/bip39';
-import { Copy, Refresh } from '@vicons/tabler';
+  import {
+    chineseSimplifiedWordList,
+    chineseTraditionalWordList,
+    czechWordList,
+    englishWordList,
+    entropyToMnemonic,
+    frenchWordList,
+    generateEntropy,
+    italianWordList,
+    japaneseWordList,
+    koreanWordList,
+    mnemonicToEntropy,
+    portugueseWordList,
+    spanishWordList,
+  } from '@it-tools/bip39';
 
-import { useCopy } from '@/composable/copy';
-import { useValidation } from '@/composable/validation';
-import { isNotThrowing } from '@/utils/boolean';
-import { withDefaultOnError } from '@/utils/defaults';
+  import { useCopy } from '@/composable/copy';
+  import { useValidation } from '@/composable/validation';
+  import { isNotThrowing } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
 
-const languages = {
-  'English': englishWordList,
-  'Chinese simplified': chineseSimplifiedWordList,
-  'Chinese traditional': chineseTraditionalWordList,
-  'Czech': czechWordList,
-  'French': frenchWordList,
-  'Italian': italianWordList,
-  'Japanese': japaneseWordList,
-  'Korean': koreanWordList,
-  'Portuguese': portugueseWordList,
-  'Spanish': spanishWordList,
-};
+  const languages = {
+    English: englishWordList,
+    'Chinese simplified': chineseSimplifiedWordList,
+    'Chinese traditional': chineseTraditionalWordList,
+    Czech: czechWordList,
+    French: frenchWordList,
+    Italian: italianWordList,
+    Japanese: japaneseWordList,
+    Korean: koreanWordList,
+    Portuguese: portugueseWordList,
+    Spanish: spanishWordList,
+  };
 
-const entropy = ref(generateEntropy());
-const passphraseInput = ref('');
+  const entropy = ref(generateEntropy());
+  const passphraseInput = ref('');
 
-const language = ref<keyof typeof languages>('English');
-const passphrase = computed({
-  get() {
-    return withDefaultOnError(() => entropyToMnemonic(entropy.value, languages[language.value]), passphraseInput.value);
-  },
-  set(value: string) {
-    passphraseInput.value = value;
-    entropy.value = withDefaultOnError(() => mnemonicToEntropy(value, languages[language.value]), '');
-  },
-});
-
-const entropyValidation = useValidation({
-  source: entropy,
-  rules: [
-    {
-      validator: value => value === '' || (value.length <= 32 && value.length >= 16 && value.length % 4 === 0),
-      message: 'Entropy length should be >= 16, <= 32 and be a multiple of 4',
+  const language = ref<keyof typeof languages>('English');
+  const passphrase = computed({
+    get() {
+      return withDefaultOnError(
+        () => entropyToMnemonic(entropy.value, languages[language.value]),
+        passphraseInput.value,
+      );
     },
-    {
-      validator: value => /^[a-fA-F0-9]*$/.test(value),
-      message: 'Entropy should be an hexadecimal string',
+    set(value: string) {
+      passphraseInput.value = value;
+      entropy.value = withDefaultOnError(() => mnemonicToEntropy(value, languages[language.value]), '');
     },
-  ],
-});
+  });
 
-const mnemonicValidation = useValidation({
-  source: passphrase,
-  rules: [
-    {
-      validator: value => isNotThrowing(() => mnemonicToEntropy(value, languages[language.value])),
-      message: 'Invalid mnemonic',
-    },
-  ],
-});
+  const _entropyValidation = useValidation({
+    source: entropy,
+    rules: [
+      {
+        validator: (value) => value === '' || (value.length <= 32 && value.length >= 16 && value.length % 4 === 0),
+        message: 'Entropy length should be >= 16, <= 32 and be a multiple of 4',
+      },
+      {
+        validator: (value) => /^[a-fA-F0-9]*$/.test(value),
+        message: 'Entropy should be an hexadecimal string',
+      },
+    ],
+  });
 
-function refreshEntropy() {
-  entropy.value = generateEntropy();
-}
+  const _mnemonicValidation = useValidation({
+    source: passphrase,
+    rules: [
+      {
+        validator: (value) => isNotThrowing(() => mnemonicToEntropy(value, languages[language.value])),
+        message: 'Invalid mnemonic',
+      },
+    ],
+  });
 
-const { copy: copyEntropy } = useCopy({ source: entropy, text: 'Entropy copied to the clipboard' });
-const { copy: copyPassphrase } = useCopy({ source: passphrase, text: 'Passphrase copied to the clipboard' });
+  function _refreshEntropy() {
+    entropy.value = generateEntropy();
+  }
+
+  const { copy: copyEntropy } = useCopy({ source: entropy, text: 'Entropy copied to the clipboard' });
+  const { copy: copyPassphrase } = useCopy({ source: passphrase, text: 'Passphrase copied to the clipboard' });
 </script>
 
 <template>

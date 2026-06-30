@@ -1,81 +1,80 @@
 <script setup lang="ts">
-import { useBase64 } from '@vueuse/core';
-import type { Ref } from 'vue';
-import { useCopy } from '@/composable/copy';
-import { getExtensionFromMimeType, getMimeTypeFromBase64, previewImageFromBase64, useDownloadFileFromBase64Refs } from '@/composable/downloadBase64';
-import { useValidation } from '@/composable/validation';
-import { isValidBase64 } from '@/utils/base64';
+  import { useBase64 } from '@vueuse/core';
+  import type { Ref } from 'vue';
+  import { useCopy } from '@/composable/copy';
+  import {
+    getExtensionFromMimeType,
+    getMimeTypeFromBase64,
+    previewImageFromBase64,
+    useDownloadFileFromBase64Refs,
+  } from '@/composable/downloadBase64';
+  import { useValidation } from '@/composable/validation';
+  import { isValidBase64 } from '@/utils/base64';
 
-const fileName = ref('file');
-const fileExtension = ref('');
-const base64Input = ref('');
-const { download } = useDownloadFileFromBase64Refs(
-  {
+  const fileName = ref('file');
+  const fileExtension = ref('');
+  const base64Input = ref('');
+  const { download } = useDownloadFileFromBase64Refs({
     source: base64Input,
     filename: fileName,
     extension: fileExtension,
   });
-const base64InputValidation = useValidation({
-  source: base64Input,
-  rules: [
-    {
-      message: 'Invalid base 64 string',
-      validator: value => isValidBase64(value.trim()),
-    },
-  ],
-});
+  const base64InputValidation = useValidation({
+    source: base64Input,
+    rules: [
+      {
+        message: 'Invalid base 64 string',
+        validator: (value) => isValidBase64(value.trim()),
+      },
+    ],
+  });
 
-watch(
-  base64Input,
-  (newValue, _) => {
+  watch(base64Input, (newValue, _) => {
     const { mimeType } = getMimeTypeFromBase64({ base64String: newValue });
     if (mimeType) {
       fileExtension.value = getExtensionFromMimeType(mimeType) || fileExtension.value;
     }
-  },
-);
+  });
 
-function previewImage() {
-  if (!base64InputValidation.isValid) {
-    return;
-  }
-  try {
-    const image = previewImageFromBase64(base64Input.value);
-    image.style.maxWidth = '100%';
-    image.style.maxHeight = '400px';
-    const previewContainer = document.getElementById('previewContainer');
-    if (previewContainer) {
-      previewContainer.innerHTML = '';
-      previewContainer.appendChild(image);
+  function _previewImage() {
+    if (!base64InputValidation.isValid) {
+      return;
+    }
+    try {
+      const image = previewImageFromBase64(base64Input.value);
+      image.style.maxWidth = '100%';
+      image.style.maxHeight = '400px';
+      const previewContainer = document.getElementById('previewContainer');
+      if (previewContainer) {
+        previewContainer.innerHTML = '';
+        previewContainer.appendChild(image);
+      }
+    } catch (_) {
+      //
     }
   }
-  catch (_) {
-    //
-  }
-}
 
-function downloadFile() {
-  if (!base64InputValidation.isValid) {
-    return;
+  function _downloadFile() {
+    if (!base64InputValidation.isValid) {
+      return;
+    }
+
+    try {
+      download();
+    } catch (_) {
+      //
+    }
   }
 
-  try {
-    download();
-  }
-  catch (_) {
-    //
-  }
-}
+  const fileInput = ref() as Ref<File>;
+  const { base64: fileBase64 } = useBase64(fileInput);
+  const { copy: copyFileBase64 } = useCopy({ source: fileBase64, text: 'Base64 string copied to the clipboard' });
 
-const fileInput = ref() as Ref<File>;
-const { base64: fileBase64 } = useBase64(fileInput);
-const { copy: copyFileBase64 } = useCopy({ source: fileBase64, text: 'Base64 string copied to the clipboard' });
-
-async function onUpload(file: File) {
-  if (file) {
-    fileInput.value = file;
+  async function _onUpload(file: File) {
+    if (file) {
+      fileInput.value = file;
+    }
   }
-}
 </script>
 
 <template>

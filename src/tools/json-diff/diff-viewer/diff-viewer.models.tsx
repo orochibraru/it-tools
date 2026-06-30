@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import type { ArrayDifference, Difference, ObjectDifference } from '../json-diff.types';
 import { useCopy } from '@/composable/copy';
+import type { ArrayDifference, Difference, ObjectDifference } from '../json-diff.types';
 
 export function DiffRootViewer({ diff }: { diff: Difference }) {
   return (
@@ -72,11 +72,11 @@ function ChildrenViewer({
   showKeys,
   showChildrenKeys = true,
 }: {
-  diff: ArrayDifference | ObjectDifference
-  showKeys: boolean
-  showChildrenKeys?: boolean
-  openTag: string
-  closeTag: string
+  diff: ArrayDifference | ObjectDifference;
+  showKeys: boolean;
+  showChildrenKeys?: boolean;
+  openTag: string;
+  closeTag: string;
 }) {
   const { children, key, status, type } = diff;
 
@@ -91,7 +91,7 @@ function ChildrenViewer({
         )}
 
         {openTag}
-        {children.length > 0 && <ul>{children.map(diff => DiffViewer({ diff, showKeys: showChildrenKeys }))}</ul>}
+        {children.length > 0 && <ul>{children.map((diff) => DiffViewer({ diff, showKeys: showChildrenKeys }))}</ul>}
         {`${closeTag},`}
       </div>
     </li>

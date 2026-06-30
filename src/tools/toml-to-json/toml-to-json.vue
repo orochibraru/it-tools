@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { parse as parseToml } from 'iarna-toml-esm';
-import { withDefaultOnError } from '../../utils/defaults';
-import { isValidToml } from './toml.services';
-import type { UseValidationRule } from '@/composable/validation';
+  import { parse as parseToml } from 'iarna-toml-esm';
+  import type { UseValidationRule } from '@/composable/validation';
+  import { withDefaultOnError } from '../../utils/defaults';
+  import { isValidToml } from './toml.services';
 
-const transformer = (value: string) => value === '' ? '' : withDefaultOnError(() => JSON.stringify(parseToml(value), null, 3), '');
+  const _transformer = (value: string) =>
+    value === '' ? '' : withDefaultOnError(() => JSON.stringify(parseToml(value), null, 3), '');
 
-const rules: UseValidationRule<string>[] = [
-  {
-    validator: isValidToml,
-    message: 'Provided TOML is not valid.',
-  },
-];
+  const _rules: UseValidationRule<string>[] = [
+    {
+      validator: isValidToml,
+      message: 'Provided TOML is not valid.',
+    },
+  ];
 </script>
 
 <template>

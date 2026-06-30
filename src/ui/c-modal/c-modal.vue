@@ -1,48 +1,48 @@
 <script setup lang="ts">
-import { useTheme } from './c-modal.theme';
+  import { useTheme } from './c-modal.theme';
 
-defineOptions({
-  inheritAttrs: false,
-});
+  const props = withDefaults(defineProps<{ open?: boolean; centered?: boolean }>(), {
+    open: false,
+    centered: true,
+  });
 
-const props = withDefaults(defineProps<{ open?: boolean; centered?: boolean }>(), {
-  open: false,
-  centered: true,
-});
+  const emit = defineEmits(['update:open']);
 
-const emit = defineEmits(['update:open']);
+  defineOptions({
+    inheritAttrs: false,
+  });
 
-const isOpen = useVModel(props, 'open', emit, { passive: true });
+  const isOpen = useVModel(props, 'open', emit, { passive: true });
 
-const { centered } = toRefs(props);
+  const { centered } = toRefs(props);
 
-function close() {
-  isOpen.value = false;
-}
-
-function open() {
-  isOpen.value = true;
-}
-
-function toggle() {
-  isOpen.value = !isOpen.value;
-}
-
-defineExpose({
-  close,
-  open,
-  toggle,
-  isOpen,
-});
-
-const theme = useTheme();
-const modal = ref();
-
-onClickOutside(modal, () => {
-  if (isOpen.value) {
-    close();
+  function close() {
+    isOpen.value = false;
   }
-});
+
+  function open() {
+    isOpen.value = true;
+  }
+
+  function toggle() {
+    isOpen.value = !isOpen.value;
+  }
+
+  defineExpose({
+    close,
+    open,
+    toggle,
+    isOpen,
+  });
+
+  const _theme = useTheme();
+  const modal = ref();
+
+  onClickOutside(modal, () => {
+    if (isOpen.value) {
+      close();
+    }
+  });
 </script>
 
 <template>

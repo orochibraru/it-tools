@@ -19,13 +19,13 @@ function ipv4ToIpv6({ ip, prefix = '0000:0000:0000:0000:0000:ffff:' }: { ip: str
   }
 
   return (
-    prefix
-    + _.chain(ip)
+    prefix +
+    _.chain(ip)
       .trim()
       .split('.')
-      .map(part => Number.parseInt(part).toString(16).padStart(2, '0'))
+      .map((part) => Number.parseInt(part).toString(16).padStart(2, '0'))
       .chunk(2)
-      .map(blocks => blocks.join(''))
+      .map((blocks) => blocks.join(''))
       .join(':')
       .value()
   );

@@ -1,9 +1,9 @@
 <script lang="ts" setup>
-const data = ref([
-  { name: 'John', age: 20 },
-  { name: 'Jane', age: 24 },
-  { name: 'Joe', age: 30 },
-]);
+  const _data = ref([
+    { name: 'John', age: 20 },
+    { name: 'Jane', age: 24 },
+    { name: 'Joe', age: 30 },
+  ]);
 </script>
 
 <template>

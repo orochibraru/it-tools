@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { useStorage } from '@vueuse/core';
-import { convert } from './list-converter.models';
-import type { ConvertOptions } from './list-converter.types';
+  import { useStorage } from '@vueuse/core';
+  import { convert } from './list-converter.models';
+  import type { ConvertOptions } from './list-converter.types';
 
-const sortOrderOptions = [
-  {
-    label: 'Sort ascending',
-    value: 'asc',
-    disabled: false,
-  },
-  {
-    label: 'Sort descending',
-    value: 'desc',
-    disabled: false,
-  },
-];
+  const _sortOrderOptions = [
+    {
+      label: 'Sort ascending',
+      value: 'asc',
+      disabled: false,
+    },
+    {
+      label: 'Sort descending',
+      value: 'desc',
+      disabled: false,
+    },
+  ];
 
-const conversionConfig = useStorage<ConvertOptions>('list-converter:conversionConfig', {
-  lowerCase: false,
-  trimItems: true,
-  removeDuplicates: true,
-  keepLineBreaks: false,
-  itemPrefix: '',
-  itemSuffix: '',
-  listPrefix: '',
-  listSuffix: '',
-  reverseList: false,
-  sortList: null,
-  separator: ', ',
-});
+  const conversionConfig = useStorage<ConvertOptions>('list-converter:conversionConfig', {
+    lowerCase: false,
+    trimItems: true,
+    removeDuplicates: true,
+    keepLineBreaks: false,
+    itemPrefix: '',
+    itemSuffix: '',
+    listPrefix: '',
+    listSuffix: '',
+    reverseList: false,
+    sortList: null,
+    separator: ', ',
+  });
 
-function transformer(value: string) {
-  return convert(value, conversionConfig.value);
-}
+  function _transformer(value: string) {
+    return convert(value, conversionConfig.value);
+  }
 </script>
 
 <template>

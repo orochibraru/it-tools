@@ -1,110 +1,110 @@
 <script setup lang="ts">
-import cronstrue from 'cronstrue';
-import { isValidCron } from 'cron-validator';
-import { useStyleStore } from '@/stores/style.store';
+  import { isValidCron } from 'cron-validator';
+  import cronstrue from 'cronstrue';
+  import { useStyleStore } from '@/stores/style.store';
 
-function isCronValid(v: string) {
-  return isValidCron(v, { allowBlankDay: true, alias: true, seconds: true });
-}
-
-const styleStore = useStyleStore();
-
-const cron = ref('40 * * * *');
-const cronstrueConfig = reactive({
-  verbose: true,
-  dayOfWeekStartIndexZero: true,
-  use24HourTimeFormat: true,
-  throwExceptionOnParseError: true,
-});
-
-const helpers = [
-  {
-    symbol: '*',
-    meaning: 'Any value',
-    example: '* * * *',
-    equivalent: 'Every minute',
-  },
-  {
-    symbol: '-',
-    meaning: 'Range of values',
-    example: '1-10 * * *',
-    equivalent: 'Minutes 1 through 10',
-  },
-  {
-    symbol: ',',
-    meaning: 'List of values',
-    example: '1,10 * * *',
-    equivalent: 'At minutes 1 and 10',
-  },
-  {
-    symbol: '/',
-    meaning: 'Step values',
-    example: '*/10 * * *',
-    equivalent: 'Every 10 minutes',
-  },
-  {
-    symbol: '@yearly',
-    meaning: 'Once every year at midnight of 1 January',
-    example: '@yearly',
-    equivalent: '0 0 1 1 *',
-  },
-  {
-    symbol: '@annually',
-    meaning: 'Same as @yearly',
-    example: '@annually',
-    equivalent: '0 0 1 1 *',
-  },
-  {
-    symbol: '@monthly',
-    meaning: 'Once a month at midnight on the first day',
-    example: '@monthly',
-    equivalent: '0 0 1 * *',
-  },
-  {
-    symbol: '@weekly',
-    meaning: 'Once a week at midnight on Sunday morning',
-    example: '@weekly',
-    equivalent: '0 0 * * 0',
-  },
-  {
-    symbol: '@daily',
-    meaning: 'Once a day at midnight',
-    example: '@daily',
-    equivalent: '0 0 * * *',
-  },
-  {
-    symbol: '@midnight',
-    meaning: 'Same as @daily',
-    example: '@midnight',
-    equivalent: '0 0 * * *',
-  },
-  {
-    symbol: '@hourly',
-    meaning: 'Once an hour at the beginning of the hour',
-    example: '@hourly',
-    equivalent: '0 * * * *',
-  },
-  {
-    symbol: '@reboot',
-    meaning: 'Run at startup',
-    example: '',
-    equivalent: '',
-  },
-];
-
-const cronString = computed(() => {
-  if (isCronValid(cron.value)) {
-    return cronstrue.toString(cron.value, cronstrueConfig);
+  function isCronValid(v: string) {
+    return isValidCron(v, { allowBlankDay: true, alias: true, seconds: true });
   }
-  return ' ';
-});
 
-const cronValidationRules = [
-  {
-    validator: (value: string) => isCronValid(value),
-    message: 'This cron is invalid',
-  },
-];
+  const _styleStore = useStyleStore();
+
+  const cron = ref('40 * * * *');
+  const cronstrueConfig = reactive({
+    verbose: true,
+    dayOfWeekStartIndexZero: true,
+    use24HourTimeFormat: true,
+    throwExceptionOnParseError: true,
+  });
+
+  const _helpers = [
+    {
+      symbol: '*',
+      meaning: 'Any value',
+      example: '* * * *',
+      equivalent: 'Every minute',
+    },
+    {
+      symbol: '-',
+      meaning: 'Range of values',
+      example: '1-10 * * *',
+      equivalent: 'Minutes 1 through 10',
+    },
+    {
+      symbol: ',',
+      meaning: 'List of values',
+      example: '1,10 * * *',
+      equivalent: 'At minutes 1 and 10',
+    },
+    {
+      symbol: '/',
+      meaning: 'Step values',
+      example: '*/10 * * *',
+      equivalent: 'Every 10 minutes',
+    },
+    {
+      symbol: '@yearly',
+      meaning: 'Once every year at midnight of 1 January',
+      example: '@yearly',
+      equivalent: '0 0 1 1 *',
+    },
+    {
+      symbol: '@annually',
+      meaning: 'Same as @yearly',
+      example: '@annually',
+      equivalent: '0 0 1 1 *',
+    },
+    {
+      symbol: '@monthly',
+      meaning: 'Once a month at midnight on the first day',
+      example: '@monthly',
+      equivalent: '0 0 1 * *',
+    },
+    {
+      symbol: '@weekly',
+      meaning: 'Once a week at midnight on Sunday morning',
+      example: '@weekly',
+      equivalent: '0 0 * * 0',
+    },
+    {
+      symbol: '@daily',
+      meaning: 'Once a day at midnight',
+      example: '@daily',
+      equivalent: '0 0 * * *',
+    },
+    {
+      symbol: '@midnight',
+      meaning: 'Same as @daily',
+      example: '@midnight',
+      equivalent: '0 0 * * *',
+    },
+    {
+      symbol: '@hourly',
+      meaning: 'Once an hour at the beginning of the hour',
+      example: '@hourly',
+      equivalent: '0 * * * *',
+    },
+    {
+      symbol: '@reboot',
+      meaning: 'Run at startup',
+      example: '',
+      equivalent: '',
+    },
+  ];
+
+  const _cronString = computed(() => {
+    if (isCronValid(cron.value)) {
+      return cronstrue.toString(cron.value, cronstrueConfig);
+    }
+    return ' ';
+  });
+
+  const _cronValidationRules = [
+    {
+      validator: (value: string) => isCronValid(value),
+      message: 'This cron is invalid',
+    },
+  ];
 </script>
 
 <template>

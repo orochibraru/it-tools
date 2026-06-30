@@ -1,60 +1,60 @@
 <script setup lang="ts">
-import { useWindowSize } from '@vueuse/core';
+  import { useWindowSize } from '@vueuse/core';
 
-const { width, height } = useWindowSize();
+  const { width, height } = useWindowSize();
 
-const sections = [
-  {
-    name: 'Screen',
-    information: [
-      {
-        label: 'Screen size',
-        value: computed(() => `${window.screen.availWidth} x ${window.screen.availHeight}`),
-      },
-      {
-        label: 'Orientation',
-        value: computed(() => window.screen.orientation.type),
-      },
-      {
-        label: 'Orientation angle',
-        value: computed(() => `${window.screen.orientation.angle}°`),
-      },
-      {
-        label: 'Color depth',
-        value: computed(() => `${window.screen.colorDepth} bits`),
-      },
-      {
-        label: 'Pixel ratio',
-        value: computed(() => `${window.devicePixelRatio} dppx`),
-      },
-      {
-        label: 'Window size',
-        value: computed(() => `${width.value} x ${height.value}`),
-      },
-    ],
-  },
-  {
-    name: 'Device',
-    information: [
-      {
-        label: 'Browser vendor',
-        value: computed(() => navigator.vendor),
-      },
-      {
-        label: 'Languages',
-        value: computed(() => navigator.languages.join(', ')),
-      },
-      {
-        label: 'Platform',
-        value: computed(() => navigator.platform),
-      },
-      {
-        label: 'User agent',
-        value: computed(() => navigator.userAgent),
-      },
-    ],
-  },
-];
+  const _sections = [
+    {
+      name: 'Screen',
+      information: [
+        {
+          label: 'Screen size',
+          value: computed(() => `${window.screen.availWidth} x ${window.screen.availHeight}`),
+        },
+        {
+          label: 'Orientation',
+          value: computed(() => window.screen.orientation.type),
+        },
+        {
+          label: 'Orientation angle',
+          value: computed(() => `${window.screen.orientation.angle}°`),
+        },
+        {
+          label: 'Color depth',
+          value: computed(() => `${window.screen.colorDepth} bits`),
+        },
+        {
+          label: 'Pixel ratio',
+          value: computed(() => `${window.devicePixelRatio} dppx`),
+        },
+        {
+          label: 'Window size',
+          value: computed(() => `${width.value} x ${height.value}`),
+        },
+      ],
+    },
+    {
+      name: 'Device',
+      information: [
+        {
+          label: 'Browser vendor',
+          value: computed(() => navigator.vendor),
+        },
+        {
+          label: 'Languages',
+          value: computed(() => navigator.languages.join(', ')),
+        },
+        {
+          label: 'Platform',
+          value: computed(() => navigator.platform),
+        },
+        {
+          label: 'User agent',
+          value: computed(() => navigator.userAgent),
+        },
+      ],
+    },
+  ];
 </script>
 
 <template>

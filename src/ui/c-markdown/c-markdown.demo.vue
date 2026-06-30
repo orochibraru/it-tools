@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const md = `
+  const _md = `
 # IT Tools
 
 ## About

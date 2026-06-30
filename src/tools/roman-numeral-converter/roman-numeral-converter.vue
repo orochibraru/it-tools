@@ -1,42 +1,45 @@
 <script setup lang="ts">
-import {
-  MAX_ARABIC_TO_ROMAN,
-  MIN_ARABIC_TO_ROMAN,
-  arabicToRoman,
-  isValidRomanNumber,
-  romanToArabic,
-} from './roman-numeral-converter.service';
-import { useCopy } from '@/composable/copy';
-import { useValidation } from '@/composable/validation';
+  import { useCopy } from '@/composable/copy';
+  import { useValidation } from '@/composable/validation';
+  import {
+    arabicToRoman,
+    isValidRomanNumber,
+    MAX_ARABIC_TO_ROMAN,
+    MIN_ARABIC_TO_ROMAN,
+    romanToArabic,
+  } from './roman-numeral-converter.service';
 
-const inputNumeral = ref(42);
-const outputRoman = computed(() => arabicToRoman(inputNumeral.value));
+  const inputNumeral = ref(42);
+  const outputRoman = computed(() => arabicToRoman(inputNumeral.value));
 
-const { attrs: validationNumeral } = useValidation({
-  source: inputNumeral,
-  rules: [
-    {
-      validator: value => value >= MIN_ARABIC_TO_ROMAN && value <= MAX_ARABIC_TO_ROMAN,
-      message: `We can only convert numbers between ${MIN_ARABIC_TO_ROMAN.toLocaleString()} and ${MAX_ARABIC_TO_ROMAN.toLocaleString()}`,
-    },
-  ],
-});
+  const { attrs: validationNumeral } = useValidation({
+    source: inputNumeral,
+    rules: [
+      {
+        validator: (value) => value >= MIN_ARABIC_TO_ROMAN && value <= MAX_ARABIC_TO_ROMAN,
+        message: `We can only convert numbers between ${MIN_ARABIC_TO_ROMAN.toLocaleString()} and ${MAX_ARABIC_TO_ROMAN.toLocaleString()}`,
+      },
+    ],
+  });
 
-const inputRoman = ref('XLII');
-const outputNumeral = computed(() => romanToArabic(inputRoman.value));
+  const inputRoman = ref('XLII');
+  const outputNumeral = computed(() => romanToArabic(inputRoman.value));
 
-const validationRoman = useValidation({
-  source: inputRoman,
-  rules: [
-    {
-      validator: value => isValidRomanNumber(value),
-      message: 'The input you entered is not a valid roman number',
-    },
-  ],
-});
+  const _validationRoman = useValidation({
+    source: inputRoman,
+    rules: [
+      {
+        validator: (value) => isValidRomanNumber(value),
+        message: 'The input you entered is not a valid roman number',
+      },
+    ],
+  });
 
-const { copy: copyRoman } = useCopy({ source: outputRoman, text: 'Roman number copied to the clipboard' });
-const { copy: copyArabic } = useCopy({ source: () => String(outputNumeral), text: 'Arabic number copied to the clipboard' });
+  const { copy: copyRoman } = useCopy({ source: outputRoman, text: 'Roman number copied to the clipboard' });
+  const { copy: copyArabic } = useCopy({
+    source: () => String(outputNumeral),
+    text: 'Arabic number copied to the clipboard',
+  });
 </script>
 
 <template>

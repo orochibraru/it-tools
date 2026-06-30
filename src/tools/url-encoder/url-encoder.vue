@@ -1,38 +1,38 @@
 <script setup lang="ts">
-import { useCopy } from '@/composable/copy';
-import { useValidation } from '@/composable/validation';
-import { isNotThrowing } from '@/utils/boolean';
-import { withDefaultOnError } from '@/utils/defaults';
+  import { useCopy } from '@/composable/copy';
+  import { useValidation } from '@/composable/validation';
+  import { isNotThrowing } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
 
-const encodeInput = ref('Hello world :)');
-const encodeOutput = computed(() => withDefaultOnError(() => encodeURIComponent(encodeInput.value), ''));
+  const encodeInput = ref('Hello world :)');
+  const encodeOutput = computed(() => withDefaultOnError(() => encodeURIComponent(encodeInput.value), ''));
 
-const encodedValidation = useValidation({
-  source: encodeInput,
-  rules: [
-    {
-      validator: value => isNotThrowing(() => encodeURIComponent(value)),
-      message: 'Impossible to parse this string',
-    },
-  ],
-});
+  const _encodedValidation = useValidation({
+    source: encodeInput,
+    rules: [
+      {
+        validator: (value) => isNotThrowing(() => encodeURIComponent(value)),
+        message: 'Impossible to parse this string',
+      },
+    ],
+  });
 
-const { copy: copyEncoded } = useCopy({ source: encodeOutput, text: 'Encoded string copied to the clipboard' });
+  const { copy: copyEncoded } = useCopy({ source: encodeOutput, text: 'Encoded string copied to the clipboard' });
 
-const decodeInput = ref('Hello%20world%20%3A)');
-const decodeOutput = computed(() => withDefaultOnError(() => decodeURIComponent(decodeInput.value), ''));
+  const decodeInput = ref('Hello%20world%20%3A)');
+  const decodeOutput = computed(() => withDefaultOnError(() => decodeURIComponent(decodeInput.value), ''));
 
-const decodeValidation = useValidation({
-  source: decodeInput,
-  rules: [
-    {
-      validator: value => isNotThrowing(() => decodeURIComponent(value)),
-      message: 'Impossible to parse this string',
-    },
-  ],
-});
+  const _decodeValidation = useValidation({
+    source: decodeInput,
+    rules: [
+      {
+        validator: (value) => isNotThrowing(() => decodeURIComponent(value)),
+        message: 'Impossible to parse this string',
+      },
+    ],
+  });
 
-const { copy: copyDecoded } = useCopy({ source: decodeOutput, text: 'Decoded string copied to the clipboard' });
+  const { copy: copyDecoded } = useCopy({ source: decodeOutput, text: 'Decoded string copied to the clipboard' });
 </script>
 
 <template>

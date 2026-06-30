@@ -1,34 +1,33 @@
 <script setup lang="ts">
-import { SHA1 } from 'crypto-js';
-import InputCopyable from '@/components/InputCopyable.vue';
-import { macAddressValidation } from '@/utils/macAddress';
+  import { SHA1 } from 'crypto-js';
+  import { macAddressValidation } from '@/utils/macAddress';
 
-const macAddress = ref('20:37:06:12:34:56');
-const calculatedSections = computed(() => {
-  const timestamp = new Date().getTime();
-  const hex40bit = SHA1(timestamp + macAddress.value)
-    .toString()
-    .substring(30);
+  const macAddress = ref('20:37:06:12:34:56');
+  const _calculatedSections = computed(() => {
+    const timestamp = new Date().getTime();
+    const hex40bit = SHA1(timestamp + macAddress.value)
+      .toString()
+      .substring(30);
 
-  const ula = `fd${hex40bit.substring(0, 2)}:${hex40bit.substring(2, 6)}:${hex40bit.substring(6)}`;
+    const ula = `fd${hex40bit.substring(0, 2)}:${hex40bit.substring(2, 6)}:${hex40bit.substring(6)}`;
 
-  return [
-    {
-      label: 'IPv6 ULA:',
-      value: `${ula}::/48`,
-    },
-    {
-      label: 'First routable block:',
-      value: `${ula}:0::/64`,
-    },
-    {
-      label: 'Last routable block:',
-      value: `${ula}:ffff::/64`,
-    },
-  ];
-});
+    return [
+      {
+        label: 'IPv6 ULA:',
+        value: `${ula}::/48`,
+      },
+      {
+        label: 'First routable block:',
+        value: `${ula}:0::/64`,
+      },
+      {
+        label: 'Last routable block:',
+        value: `${ula}:ffff::/64`,
+      },
+    ];
+  });
 
-const addressValidation = macAddressValidation(macAddress);
+  const _addressValidation = macAddressValidation(macAddress);
 </script>
 
 <template>

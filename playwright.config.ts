@@ -53,13 +53,11 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
 
-  ...(useWebServer
-    && {
-      webServer: {
-        command: 'npm run preview',
-        url: 'http://localhost:5050',
-        reuseExistingServer: !isCI,
-      },
-    }
-  ),
+  ...(useWebServer && {
+    webServer: {
+      command: 'npm run preview',
+      url: 'http://localhost:5050',
+      reuseExistingServer: !isCI,
+    },
+  }),
 });

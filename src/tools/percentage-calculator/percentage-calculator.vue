@@ -1,32 +1,32 @@
 <script setup lang="ts">
-const percentageX = ref();
-const percentageY = ref();
-const percentageResult = computed(() => {
-  if (percentageX.value === undefined || percentageY.value === undefined) {
-    return '';
-  }
-  return (percentageX.value / 100 * percentageY.value).toString();
-});
+  const percentageX = ref();
+  const percentageY = ref();
+  const _percentageResult = computed(() => {
+    if (percentageX.value === undefined || percentageY.value === undefined) {
+      return '';
+    }
+    return ((percentageX.value / 100) * percentageY.value).toString();
+  });
 
-const numberX = ref();
-const numberY = ref();
-const numberResult = computed(() => {
-  if (numberX.value === undefined || numberY.value === undefined) {
-    return '';
-  }
-  const result = 100 * numberX.value / numberY.value;
-  return (!Number.isFinite(result) || Number.isNaN(result)) ? '' : result.toString();
-});
+  const numberX = ref();
+  const numberY = ref();
+  const _numberResult = computed(() => {
+    if (numberX.value === undefined || numberY.value === undefined) {
+      return '';
+    }
+    const result = (100 * numberX.value) / numberY.value;
+    return !Number.isFinite(result) || Number.isNaN(result) ? '' : result.toString();
+  });
 
-const numberFrom = ref();
-const numberTo = ref();
-const percentageIncreaseDecrease = computed(() => {
-  if (numberFrom.value === undefined || numberTo.value === undefined) {
-    return '';
-  }
-  const result = (numberTo.value - numberFrom.value) / numberFrom.value * 100;
-  return (!Number.isFinite(result) || Number.isNaN(result)) ? '' : result.toString();
-});
+  const numberFrom = ref();
+  const numberTo = ref();
+  const _percentageIncreaseDecrease = computed(() => {
+    if (numberFrom.value === undefined || numberTo.value === undefined) {
+      return '';
+    }
+    const result = ((numberTo.value - numberFrom.value) / numberFrom.value) * 100;
+    return !Number.isFinite(result) || Number.isNaN(result) ? '' : result.toString();
+  });
 </script>
 
 <template>

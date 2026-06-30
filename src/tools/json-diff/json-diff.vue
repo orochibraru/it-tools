@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import JSON5 from 'json5';
+  import JSON5 from 'json5';
+  import { isNotThrowing } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
 
-import DiffsViewer from './diff-viewer/diff-viewer.vue';
-import { withDefaultOnError } from '@/utils/defaults';
-import { isNotThrowing } from '@/utils/boolean';
+  const rawLeftJson = ref('');
+  const rawRightJson = ref('');
 
-const rawLeftJson = ref('');
-const rawRightJson = ref('');
+  const _leftJson = computed(() => withDefaultOnError(() => JSON5.parse(rawLeftJson.value), undefined));
+  const _rightJson = computed(() => withDefaultOnError(() => JSON5.parse(rawRightJson.value), undefined));
 
-const leftJson = computed(() => withDefaultOnError(() => JSON5.parse(rawLeftJson.value), undefined));
-const rightJson = computed(() => withDefaultOnError(() => JSON5.parse(rawRightJson.value), undefined));
-
-const jsonValidationRules = [
-  {
-    validator: (value: string) => value === '' || isNotThrowing(() => JSON5.parse(value)),
-    message: 'Invalid JSON format',
-  },
-];
+  const _jsonValidationRules = [
+    {
+      validator: (value: string) => value === '' || isNotThrowing(() => JSON5.parse(value)),
+      message: 'Invalid JSON format',
+    },
+  ];
 </script>
 
 <template>

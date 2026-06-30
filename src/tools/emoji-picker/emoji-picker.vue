@@ -1,41 +1,45 @@
 <script setup lang="ts">
-import emojiUnicodeData from 'unicode-emoji-json';
-import emojiKeywords from 'emojilib';
-import _ from 'lodash';
-import type { EmojiInfo } from './emoji.types';
-import { useFuzzySearch } from '@/composable/fuzzySearch';
-import useDebouncedRef from '@/composable/debouncedref';
+  import emojiKeywords from 'emojilib';
+  import _ from 'lodash';
+  import emojiUnicodeData from 'unicode-emoji-json';
+  import useDebouncedRef from '@/composable/debouncedref';
+  import { useFuzzySearch } from '@/composable/fuzzySearch';
+  import type { EmojiInfo } from './emoji.types';
 
-const escapeUnicode = ({ emoji }: { emoji: string }) => emoji.split('').map(unit => `\\u${unit.charCodeAt(0).toString(16).padStart(4, '0')}`).join('');
-const getEmojiCodePoints = ({ emoji }: { emoji: string }) => emoji.codePointAt(0) ? `0x${emoji.codePointAt(0)?.toString(16)}` : undefined;
+  const escapeUnicode = ({ emoji }: { emoji: string }) =>
+    emoji
+      .split('')
+      .map((unit) => `\\u${unit.charCodeAt(0).toString(16).padStart(4, '0')}`)
+      .join('');
+  const getEmojiCodePoints = ({ emoji }: { emoji: string }) =>
+    emoji.codePointAt(0) ? `0x${emoji.codePointAt(0)?.toString(16)}` : undefined;
 
-const emojis = _.map(emojiUnicodeData, (emojiInfo, emoji) => ({
-  ...emojiInfo,
-  emoji,
-  title: _.capitalize(emojiInfo.name),
-  keywords: emojiKeywords[emoji as keyof typeof emojiKeywords],
-  codePoints: getEmojiCodePoints({ emoji }),
-  unicode: escapeUnicode({ emoji }),
-}));
+  const emojis = _.map(emojiUnicodeData, (emojiInfo, emoji) => ({
+    ...emojiInfo,
+    emoji,
+    title: _.capitalize(emojiInfo.name),
+    keywords: emojiKeywords[emoji as keyof typeof emojiKeywords],
+    codePoints: getEmojiCodePoints({ emoji }),
+    unicode: escapeUnicode({ emoji }),
+  }));
 
-const emojisGroups: { emojiInfos: EmojiInfo[]; group: string }[] = _
-  .chain(emojis)
-  .groupBy('group')
-  .map((emojiInfos, group) => ({ group, emojiInfos }))
-  .value();
+  const _emojisGroups: { emojiInfos: EmojiInfo[]; group: string }[] = _.chain(emojis)
+    .groupBy('group')
+    .map((emojiInfos, group) => ({ group, emojiInfos }))
+    .value();
 
-const searchQuery = useDebouncedRef('', 500);
+  const searchQuery = useDebouncedRef('', 500);
 
-const { searchResult } = useFuzzySearch({
-  search: searchQuery,
-  data: emojis,
-  options: {
-    keys: ['group', { name: 'name', weight: 3 }, 'keywords', 'unicode', 'codePoints', 'emoji'],
-    threshold: 0.3,
-    useExtendedSearch: true,
-    isCaseSensitive: false,
-  },
-});
+  const { searchResult } = useFuzzySearch({
+    search: searchQuery,
+    data: emojis,
+    options: {
+      keys: ['group', { name: 'name', weight: 3 }, 'keywords', 'unicode', 'codePoints', 'emoji'],
+      threshold: 0.3,
+      useExtendedSearch: true,
+      isCaseSensitive: false,
+    },
+  });
 </script>
 
 <template>

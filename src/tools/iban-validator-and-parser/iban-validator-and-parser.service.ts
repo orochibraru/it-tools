@@ -14,5 +14,5 @@ const ibanErrorToMessage = {
 };
 
 function getFriendlyErrors(errorCodes: ValidationErrorsIBAN[]) {
-  return errorCodes.map(errorCode => ibanErrorToMessage[errorCode]).filter(Boolean);
+  return errorCodes.map((errorCode) => ibanErrorToMessage[errorCode]).filter(Boolean);
 }

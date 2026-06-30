@@ -1,86 +1,86 @@
 <script setup lang="ts">
-import { getCountries, getCountryCallingCode, parsePhoneNumber } from 'libphonenumber-js/max';
-import lookup from 'country-code-lookup';
-import {
-  formatTypeToHumanReadable,
-  getDefaultCountryCode,
-  getFullCountryName,
-} from './phone-parser-and-formatter.models';
-import { withDefaultOnError } from '@/utils/defaults';
-import { booleanToHumanReadable } from '@/utils/boolean';
-import { useValidation } from '@/composable/validation';
+  import lookup from 'country-code-lookup';
+  import { getCountries, getCountryCallingCode, parsePhoneNumber } from 'libphonenumber-js/max';
+  import { useValidation } from '@/composable/validation';
+  import { booleanToHumanReadable } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
+  import {
+    formatTypeToHumanReadable,
+    getDefaultCountryCode,
+    getFullCountryName,
+  } from './phone-parser-and-formatter.models';
 
-const rawPhone = ref('');
-const defaultCountryCode = ref(getDefaultCountryCode());
-const validation = useValidation({
-  source: rawPhone,
-  rules: [
-    {
-      validator: value => value === '' || /^[0-9 +\-()]+$/.test(value),
-      message: 'Invalid phone number',
-    },
-  ],
-});
+  const rawPhone = ref('');
+  const defaultCountryCode = ref(getDefaultCountryCode());
+  const validation = useValidation({
+    source: rawPhone,
+    rules: [
+      {
+        validator: (value) => value === '' || /^[0-9 +\-()]+$/.test(value),
+        message: 'Invalid phone number',
+      },
+    ],
+  });
 
-const parsedDetails = computed(() => {
-  if (!validation.isValid) {
-    return undefined;
-  }
+  const _parsedDetails = computed(() => {
+    if (!validation.isValid) {
+      return undefined;
+    }
 
-  const parsed = withDefaultOnError(() => parsePhoneNumber(rawPhone.value, defaultCountryCode.value), undefined);
+    const parsed = withDefaultOnError(() => parsePhoneNumber(rawPhone.value, defaultCountryCode.value), undefined);
 
-  if (!parsed) {
-    return undefined;
-  }
+    if (!parsed) {
+      return undefined;
+    }
 
-  return [
-    {
-      label: 'Country',
-      value: parsed.country,
-    },
-    {
-      label: 'Country',
-      value: getFullCountryName(parsed.country),
-    },
-    {
-      label: 'Country calling code',
-      value: parsed.countryCallingCode,
-    },
-    {
-      label: 'Is valid?',
-      value: booleanToHumanReadable(parsed.isValid()),
-    },
-    {
-      label: 'Is possible?',
-      value: booleanToHumanReadable(parsed.isPossible()),
-    },
-    {
-      label: 'Type',
-      value: formatTypeToHumanReadable(parsed.getType()),
-    },
-    {
-      label: 'International format',
-      value: parsed.formatInternational(),
-    },
-    {
-      label: 'National format',
-      value: parsed.formatNational(),
-    },
-    {
-      label: 'E.164 format',
-      value: parsed.format('E.164'),
-    },
-    {
-      label: 'RFC3966 format',
-      value: parsed.format('RFC3966'),
-    },
-  ];
-});
+    return [
+      {
+        label: 'Country',
+        value: parsed.country,
+      },
+      {
+        label: 'Country',
+        value: getFullCountryName(parsed.country),
+      },
+      {
+        label: 'Country calling code',
+        value: parsed.countryCallingCode,
+      },
+      {
+        label: 'Is valid?',
+        value: booleanToHumanReadable(parsed.isValid()),
+      },
+      {
+        label: 'Is possible?',
+        value: booleanToHumanReadable(parsed.isPossible()),
+      },
+      {
+        label: 'Type',
+        value: formatTypeToHumanReadable(parsed.getType()),
+      },
+      {
+        label: 'International format',
+        value: parsed.formatInternational(),
+      },
+      {
+        label: 'National format',
+        value: parsed.formatNational(),
+      },
+      {
+        label: 'E.164 format',
+        value: parsed.format('E.164'),
+      },
+      {
+        label: 'RFC3966 format',
+        value: parsed.format('RFC3966'),
+      },
+    ];
+  });
 
-const countriesOptions = getCountries().map(code => ({
-  label: `${lookup.byIso(code)?.country || code} (+${getCountryCallingCode(code)})`,
-  value: code,
-}));
+  const _countriesOptions = getCountries().map((code) => ({
+    label: `${lookup.byIso(code)?.country || code} (+${getCountryCallingCode(code)})`,
+    value: code,
+  }));
 </script>
 
 <template>

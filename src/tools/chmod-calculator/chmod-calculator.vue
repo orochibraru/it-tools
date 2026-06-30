@@ -1,28 +1,26 @@
 <script setup lang="ts">
-import { useThemeVars } from 'naive-ui';
+  import { useThemeVars } from 'naive-ui';
+  import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
 
-import InputCopyable from '../../components/InputCopyable.vue';
-import { computeChmodOctalRepresentation, computeChmodSymbolicRepresentation } from './chmod-calculator.service';
+  import type { Group, Scope } from './chmod-calculator.types';
 
-import type { Group, Scope } from './chmod-calculator.types';
+  const _themeVars = useThemeVars();
 
-const themeVars = useThemeVars();
+  const _scopes: { scope: Scope; title: string }[] = [
+    { scope: 'read', title: 'Read (4)' },
+    { scope: 'write', title: 'Write (2)' },
+    { scope: 'execute', title: 'Execute (1)' },
+  ];
+  const _groups: Group[] = ['owner', 'group', 'public'];
 
-const scopes: { scope: Scope; title: string }[] = [
-  { scope: 'read', title: 'Read (4)' },
-  { scope: 'write', title: 'Write (2)' },
-  { scope: 'execute', title: 'Execute (1)' },
-];
-const groups: Group[] = ['owner', 'group', 'public'];
+  const permissions = ref({
+    owner: { read: false, write: false, execute: false },
+    group: { read: false, write: false, execute: false },
+    public: { read: false, write: false, execute: false },
+  });
 
-const permissions = ref({
-  owner: { read: false, write: false, execute: false },
-  group: { read: false, write: false, execute: false },
-  public: { read: false, write: false, execute: false },
-});
-
-const octal = computed(() => computeChmodOctalRepresentation({ permissions: permissions.value }));
-const symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions: permissions.value }));
+  const _octal = computed(() => computeChmodOctalRepresentation({ permissions: permissions.value }));
+  const _symbolic = computed(() => computeChmodSymbolicRepresentation({ permissions: permissions.value }));
 </script>
 
 <template>

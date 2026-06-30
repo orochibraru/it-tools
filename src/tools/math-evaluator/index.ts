@@ -1,6 +1,6 @@
-import { Math } from '@vicons/tabler';
-import { defineTool } from '../tool';
+import { Math as MathTabler } from '@vicons/tabler';
 import { translate } from '@/plugins/i18n.plugin';
+import { defineTool } from '../tool';
 
 export const tool = defineTool({
   name: translate('tools.math-evaluator.title'),
@@ -40,5 +40,5 @@ export const tool = defineTool({
     'tanh',
   ],
   component: () => import('./math-evaluator.vue'),
-  icon: Math,
+  icon: MathTabler,
 });

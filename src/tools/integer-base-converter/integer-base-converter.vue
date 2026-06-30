@@ -1,34 +1,32 @@
 <script setup lang="ts">
-import InputCopyable from '../../components/InputCopyable.vue';
-import { convertBase } from './integer-base-converter.model';
-import { getErrorMessageIfThrows } from '@/utils/error';
+  import { getErrorMessageIfThrows } from '@/utils/error';
+  import { convertBase } from './integer-base-converter.model';
 
-const inputProps = {
-  'labelPosition': 'left',
-  'labelWidth': '170px',
-  'labelAlign': 'right',
-  'readonly': true,
-  'mb-2': '',
-} as const;
+  const _inputProps = {
+    labelPosition: 'left',
+    labelWidth: '170px',
+    labelAlign: 'right',
+    readonly: true,
+    'mb-2': '',
+  } as const;
 
-const input = ref('42');
-const inputBase = ref(10);
-const outputBase = ref(42);
+  const input = ref('42');
+  const inputBase = ref(10);
+  const outputBase = ref(42);
 
-function errorlessConvert(...args: Parameters<typeof convertBase>) {
-  try {
-    return convertBase(...args);
+  function _errorlessConvert(...args: Parameters<typeof convertBase>) {
+    try {
+      return convertBase(...args);
+    } catch (_err) {
+      return '';
+    }
   }
-  catch (err) {
-    return '';
-  }
-}
 
-const error = computed(() =>
-  getErrorMessageIfThrows(() =>
-    convertBase({ value: input.value, fromBase: inputBase.value, toBase: outputBase.value }),
-  ),
-);
+  const _error = computed(() =>
+    getErrorMessageIfThrows(() =>
+      convertBase({ value: input.value, fromBase: inputBase.value, toBase: outputBase.value }),
+    ),
+  );
 </script>
 
 <template>

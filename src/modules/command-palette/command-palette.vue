@@ -1,113 +1,109 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import _ from 'lodash';
-import { useCommandPaletteStore } from './command-palette.store';
-import type { PaletteOption } from './command-palette.types';
+  import _ from 'lodash';
+  import { storeToRefs } from 'pinia';
+  import { useCommandPaletteStore } from './command-palette.store';
+  import type { PaletteOption } from './command-palette.types';
 
-const isModalOpen = ref(false);
-const inputRef = ref();
-const router = useRouter();
-const isMac = computed(() => window.navigator.userAgent.toLowerCase().includes('mac'));
+  const isModalOpen = ref(false);
+  const inputRef = ref();
+  const router = useRouter();
+  const _isMac = computed(() => window.navigator.userAgent.toLowerCase().includes('mac'));
 
-const commandPaletteStore = useCommandPaletteStore();
-const { searchPrompt, filteredSearchResult } = storeToRefs(commandPaletteStore);
+  const commandPaletteStore = useCommandPaletteStore();
+  const { searchPrompt, filteredSearchResult } = storeToRefs(commandPaletteStore);
 
-const keys = useMagicKeys({
-  passive: false,
-  onEventFired(e) {
-    if (e.ctrlKey && e.key === 'k' && e.type === 'keydown') {
-      e.preventDefault();
-    }
+  const keys = useMagicKeys({
+    passive: false,
+    onEventFired(e) {
+      if (e.ctrlKey && e.key === 'k' && e.type === 'keydown') {
+        e.preventDefault();
+      }
 
-    if (e.metaKey && e.key === 'k' && e.type === 'keydown') {
-      e.preventDefault();
-    }
-  },
-});
+      if (e.metaKey && e.key === 'k' && e.type === 'keydown') {
+        e.preventDefault();
+      }
+    },
+  });
 
-whenever(isModalOpen, () => inputRef.value?.focus());
+  whenever(isModalOpen, () => inputRef.value?.focus());
 
-whenever(keys.ctrl_k, open);
-whenever(keys.meta_k, open);
-whenever(keys.escape, close);
+  whenever(keys.ctrl_k, open);
+  whenever(keys.meta_k, open);
+  whenever(keys.escape, close);
 
-function open() {
-  return isModalOpen.value = true;
-}
-
-function close() {
-  isModalOpen.value = false;
-  searchPrompt.value = '';
-}
-
-const selectedOptionIndex = ref(0);
-
-function handleKeydown(event: KeyboardEvent) {
-  const { key } = event;
-  const isEnterPressed = key === 'Enter';
-  const isArrowUpOrDown = ['ArrowUp', 'ArrowDown'].includes(key);
-  const isArrowDown = key === 'ArrowDown';
-
-  if (isArrowUpOrDown) {
-    const increment = isArrowDown ? 1 : -1;
-    const maxIndex = Math.max(_.chain(filteredSearchResult.value).values().flatten().size().value() - 1, 0);
-
-    selectedOptionIndex.value = Math.min(Math.max(selectedOptionIndex.value + increment, 0), maxIndex);
-
-    return;
+  function open() {
+    return (isModalOpen.value = true);
   }
 
-  if (isEnterPressed) {
-    const option = _.chain(filteredSearchResult.value)
+  function close() {
+    isModalOpen.value = false;
+    searchPrompt.value = '';
+  }
+
+  const selectedOptionIndex = ref(0);
+
+  function _handleKeydown(event: KeyboardEvent) {
+    const { key } = event;
+    const isEnterPressed = key === 'Enter';
+    const isArrowUpOrDown = ['ArrowUp', 'ArrowDown'].includes(key);
+    const isArrowDown = key === 'ArrowDown';
+
+    if (isArrowUpOrDown) {
+      const increment = isArrowDown ? 1 : -1;
+      const maxIndex = Math.max(_.chain(filteredSearchResult.value).values().flatten().size().value() - 1, 0);
+
+      selectedOptionIndex.value = Math.min(Math.max(selectedOptionIndex.value + increment, 0), maxIndex);
+
+      return;
+    }
+
+    if (isEnterPressed) {
+      const option = _.chain(filteredSearchResult.value).values().flatten().nth(selectedOptionIndex.value).value();
+
+      activateOption(option);
+    }
+  }
+
+  function _getOptionIndex(option: PaletteOption) {
+    return _.chain(filteredSearchResult.value)
       .values()
       .flatten()
-      .nth(selectedOptionIndex.value)
+      .findIndex((o) => o === option)
       .value();
-
-    activateOption(option);
   }
-}
 
-function getOptionIndex(option: PaletteOption) {
-  return _.chain(filteredSearchResult.value)
-    .values()
-    .flatten()
-    .findIndex(o => o === option)
-    .value();
-}
+  function activateOption(option: PaletteOption) {
+    const { closeOnSelect } = option;
 
-function activateOption(option: PaletteOption) {
-  const { closeOnSelect } = option;
+    if (option.action) {
+      option.action();
 
-  if (option.action) {
-    option.action();
+      if (closeOnSelect) {
+        close();
+      }
 
-    if (closeOnSelect) {
-      close();
+      return;
     }
 
-    return;
-  }
+    const closeAfterNavigation = closeOnSelect || _.isUndefined(closeOnSelect);
 
-  const closeAfterNavigation = closeOnSelect || _.isUndefined(closeOnSelect);
+    if (option.to) {
+      router.push(option.to);
 
-  if (option.to) {
-    router.push(option.to);
-
-    if (closeAfterNavigation) {
-      close();
+      if (closeAfterNavigation) {
+        close();
+      }
+      return;
     }
-    return;
-  }
 
-  if (option.href) {
-    window.open(option.href, '_blank');
+    if (option.href) {
+      window.open(option.href, '_blank');
 
-    if (closeAfterNavigation) {
-      close();
+      if (closeAfterNavigation) {
+        close();
+      }
     }
   }
-}
 </script>
 
 <template>

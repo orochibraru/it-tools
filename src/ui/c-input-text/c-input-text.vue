@@ -1,145 +1,164 @@
 <script lang="ts" setup>
-import { useAppTheme } from '../theme/themes';
-import { useTheme } from './c-input-text.theme';
-import { generateRandomId } from '@/utils/random';
-import { type UseValidationRule, useValidation } from '@/composable/validation';
+  import { type UseValidationRule, useValidation } from '@/composable/validation';
+  import { generateRandomId } from '@/utils/random';
+  import { useAppTheme } from '../theme/themes';
+  import { useTheme } from './c-input-text.theme';
 
-const props = withDefaults(
-  defineProps<{
-    value?: string
-    id?: string
-    placeholder?: string
-    label?: string
-    readonly?: boolean
-    disabled?: boolean
-    validationRules?: UseValidationRule<string>[]
-    validationWatch?: Ref<unknown>[]
-    validation?: ReturnType<typeof useValidation>
-    labelPosition?: 'top' | 'left'
-    labelWidth?: string
-    labelAlign?: 'left' | 'right'
-    clearable?: boolean
-    testId?: string
-    autocapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'on' | 'off' | string
-    autocomplete?: 'on' | 'off' | string
-    autocorrect?: 'on' | 'off' | string
-    spellcheck?: 'true' | 'false' | boolean
-    rawText?: boolean
-    type?: 'text' | 'password'
-    multiline?: boolean
-    rows?: number | string
-    autosize?: boolean
-    autofocus?: boolean
-    monospace?: boolean
-  }>(),
-  {
-    value: '',
-    id: generateRandomId,
-    placeholder: 'Input text',
-    label: undefined,
-    readonly: false,
-    disabled: false,
-    validationRules: () => [],
-    validationWatch: undefined,
-    validation: undefined,
-    labelPosition: 'top',
-    labelWidth: 'auto',
-    labelAlign: 'left',
-    clearable: false,
-    testId: undefined,
-    autocapitalize: undefined,
-    autocomplete: undefined,
-    autocorrect: undefined,
-    spellcheck: undefined,
-    rawText: false,
-    type: 'text',
-    multiline: false,
-    rows: 3,
-    autosize: false,
-    autofocus: false,
-    monospace: false,
-  },
-);
-const emit = defineEmits(['update:value']);
-const value = useVModel(props, 'value', emit);
-const showPassword = ref(false);
+  const props = withDefaults(
+    defineProps<{
+      value?: string;
+      id?: string;
+      placeholder?: string;
+      label?: string;
+      readonly?: boolean;
+      disabled?: boolean;
+      validationRules?: UseValidationRule<string>[];
+      validationWatch?: Ref<unknown>[];
+      validation?: ReturnType<typeof useValidation>;
+      labelPosition?: 'top' | 'left';
+      labelWidth?: string;
+      labelAlign?: 'left' | 'right';
+      clearable?: boolean;
+      testId?: string;
+      autocapitalize?: 'none' | 'sentences' | 'words' | 'characters' | 'on' | 'off' | string;
+      autocomplete?: 'on' | 'off' | string;
+      autocorrect?: 'on' | 'off' | string;
+      spellcheck?: 'true' | 'false' | boolean;
+      rawText?: boolean;
+      type?: 'text' | 'password';
+      multiline?: boolean;
+      rows?: number | string;
+      autosize?: boolean;
+      autofocus?: boolean;
+      monospace?: boolean;
+    }>(),
+    {
+      value: '',
+      id: generateRandomId,
+      placeholder: 'Input text',
+      label: undefined,
+      readonly: false,
+      disabled: false,
+      validationRules: () => [],
+      validationWatch: undefined,
+      validation: undefined,
+      labelPosition: 'top',
+      labelWidth: 'auto',
+      labelAlign: 'left',
+      clearable: false,
+      testId: undefined,
+      autocapitalize: undefined,
+      autocomplete: undefined,
+      autocorrect: undefined,
+      spellcheck: undefined,
+      rawText: false,
+      type: 'text',
+      multiline: false,
+      rows: 3,
+      autosize: false,
+      autofocus: false,
+      monospace: false,
+    },
+  );
+  const emit = defineEmits(['update:value']);
+  const value = useVModel(props, 'value', emit);
+  const showPassword = ref(false);
 
-const { id, placeholder, label, validationRules, labelPosition, labelWidth, labelAlign, autosize, readonly, disabled, clearable, type, multiline, rows, rawText, autofocus, monospace } = toRefs(props);
+  const {
+    id,
+    placeholder,
+    label,
+    validationRules,
+    labelPosition,
+    labelWidth,
+    labelAlign,
+    autosize,
+    readonly,
+    disabled,
+    clearable,
+    type,
+    multiline,
+    rows,
+    rawText,
+    autofocus,
+    monospace,
+  } = toRefs(props);
 
-const validation
-  = props.validation
-  ?? useValidation({
-    rules: validationRules,
-    source: value,
-    watch: props.validationWatch,
+  const _validation =
+    props.validation ??
+    useValidation({
+      rules: validationRules,
+      source: value,
+      watch: props.validationWatch,
+    });
+
+  const _theme = useTheme();
+  const _appTheme = useAppTheme();
+
+  const textareaRef = ref<HTMLTextAreaElement>();
+  const inputRef = ref<HTMLInputElement>();
+  const inputWrapperRef = ref<HTMLElement>();
+
+  watch(
+    [value, autosize, multiline, inputWrapperRef, textareaRef],
+    () =>
+      nextTick(() => {
+        if (props.multiline && autosize.value) {
+          resizeTextarea();
+        }
+      }),
+    { immediate: true },
+  );
+
+  function resizeTextarea() {
+    if (!textareaRef.value || !inputWrapperRef.value) {
+      return;
+    }
+
+    const scrollHeight = textareaRef.value.scrollHeight + 2;
+
+    inputWrapperRef.value.style.height = `${scrollHeight}px`;
+  }
+
+  const _htmlInputType = computed(() => {
+    if (props.type === 'password' && !showPassword.value) {
+      return 'password';
+    }
+
+    return 'text';
   });
 
-const theme = useTheme();
-const appTheme = useAppTheme();
-
-const textareaRef = ref<HTMLTextAreaElement>();
-const inputRef = ref<HTMLInputElement>();
-const inputWrapperRef = ref<HTMLElement>();
-
-watch(
-  [value, autosize, multiline, inputWrapperRef, textareaRef],
-  () => nextTick(() => {
-    if (props.multiline && autosize.value) {
-      resizeTextarea();
+  function focus() {
+    if (textareaRef.value) {
+      textareaRef.value.focus();
     }
-  }),
-  { immediate: true },
-);
 
-function resizeTextarea() {
-  if (!textareaRef.value || !inputWrapperRef.value) {
-    return;
+    if (inputRef.value) {
+      inputRef.value.focus();
+    }
   }
 
-  const scrollHeight = textareaRef.value.scrollHeight + 2;
+  function blur() {
+    if (textareaRef.value) {
+      textareaRef.value.blur?.();
+    }
 
-  inputWrapperRef.value.style.height = `${scrollHeight}px`;
-}
-
-const htmlInputType = computed(() => {
-  if (props.type === 'password' && !showPassword.value) {
-    return 'password';
+    if (inputRef.value) {
+      inputRef.value.blur?.();
+    }
   }
 
-  return 'text';
-});
+  onMounted(() => {
+    if (autofocus.value) {
+      focus();
+    }
+  });
 
-function focus() {
-  if (textareaRef.value) {
-    textareaRef.value.focus();
-  }
-
-  if (inputRef.value) {
-    inputRef.value.focus();
-  }
-}
-
-function blur() {
-  if (textareaRef.value) {
-    textareaRef.value.blur?.();
-  }
-
-  if (inputRef.value) {
-    inputRef.value.blur?.();
-  }
-}
-
-onMounted(() => {
-  if (autofocus.value) {
-    focus();
-  }
-});
-
-defineExpose({
-  inputWrapperRef,
-  focus,
-  blur,
-});
+  defineExpose({
+    inputWrapperRef,
+    focus,
+    blur,
+  });
 </script>
 
 <template>

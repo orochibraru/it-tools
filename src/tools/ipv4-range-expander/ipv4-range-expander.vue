@@ -1,59 +1,59 @@
 <script setup lang="ts">
-import { Exchange } from '@vicons/tabler';
-import { isValidIpv4 } from '../ipv4-address-converter/ipv4-address-converter.service';
-import type { Ipv4RangeExpanderResult } from './ipv4-range-expander.types';
-import { calculateCidr } from './ipv4-range-expander.service';
-import ResultRow from './result-row.vue';
-import { useValidation } from '@/composable/validation';
+  import { useValidation } from '@/composable/validation';
+  import { isValidIpv4 } from '../ipv4-address-converter/ipv4-address-converter.service';
+  import { calculateCidr } from './ipv4-range-expander.service';
+  import type { Ipv4RangeExpanderResult } from './ipv4-range-expander.types';
 
-const rawStartAddress = useStorage('ipv4-range-expander:startAddress', '192.168.1.1');
-const rawEndAddress = useStorage('ipv4-range-expander:endAddress', '192.168.6.255');
+  const rawStartAddress = useStorage('ipv4-range-expander:startAddress', '192.168.1.1');
+  const rawEndAddress = useStorage('ipv4-range-expander:endAddress', '192.168.6.255');
 
-const result = computed(() => calculateCidr({ startIp: rawStartAddress.value, endIp: rawEndAddress.value }));
+  const result = computed(() => calculateCidr({ startIp: rawStartAddress.value, endIp: rawEndAddress.value }));
 
-const calculatedValues: {
-  label: string
-  getOldValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined
-  getNewValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined
-}[] = [
-  {
-    label: 'Start address',
-    getOldValue: () => rawStartAddress.value,
-    getNewValue: result => result?.newStart,
-  },
-  {
-    label: 'End address',
-    getOldValue: () => rawEndAddress.value,
-    getNewValue: result => result?.newEnd,
-  },
-  {
-    label: 'Addresses in range',
-    getOldValue: result => result?.oldSize?.toLocaleString(),
-    getNewValue: result => result?.newSize?.toLocaleString(),
-  },
-  {
-    label: 'CIDR',
-    getOldValue: () => '',
-    getNewValue: result => result?.newCidr,
-  },
-];
+  const _calculatedValues: {
+    label: string;
+    getOldValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined;
+    getNewValue: (result: Ipv4RangeExpanderResult | undefined) => string | undefined;
+  }[] = [
+    {
+      label: 'Start address',
+      getOldValue: () => rawStartAddress.value,
+      getNewValue: (result) => result?.newStart,
+    },
+    {
+      label: 'End address',
+      getOldValue: () => rawEndAddress.value,
+      getNewValue: (result) => result?.newEnd,
+    },
+    {
+      label: 'Addresses in range',
+      getOldValue: (result) => result?.oldSize?.toLocaleString(),
+      getNewValue: (result) => result?.newSize?.toLocaleString(),
+    },
+    {
+      label: 'CIDR',
+      getOldValue: () => '',
+      getNewValue: (result) => result?.newCidr,
+    },
+  ];
 
-const startIpValidation = useValidation({
-  source: rawStartAddress,
-  rules: [{ message: 'Invalid ipv4 address', validator: ip => isValidIpv4({ ip }) }],
-});
-const endIpValidation = useValidation({
-  source: rawEndAddress,
-  rules: [{ message: 'Invalid ipv4 address', validator: ip => isValidIpv4({ ip }) }],
-});
+  const startIpValidation = useValidation({
+    source: rawStartAddress,
+    rules: [{ message: 'Invalid ipv4 address', validator: (ip) => isValidIpv4({ ip }) }],
+  });
+  const endIpValidation = useValidation({
+    source: rawEndAddress,
+    rules: [{ message: 'Invalid ipv4 address', validator: (ip) => isValidIpv4({ ip }) }],
+  });
 
-const showResult = computed(() => endIpValidation.isValid && startIpValidation.isValid && result.value !== undefined);
+  const _showResult = computed(
+    () => endIpValidation.isValid && startIpValidation.isValid && result.value !== undefined,
+  );
 
-function onSwitchStartEndClicked() {
-  const tmpStart = rawStartAddress.value;
-  rawStartAddress.value = rawEndAddress.value;
-  rawEndAddress.value = tmpStart;
-}
+  function _onSwitchStartEndClicked() {
+    const tmpStart = rawStartAddress.value;
+    rawStartAddress.value = rawEndAddress.value;
+    rawEndAddress.value = tmpStart;
+  }
 </script>
 
 <template>

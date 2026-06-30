@@ -1,27 +1,26 @@
 <script setup lang="ts">
-import InputCopyable from '../../components/InputCopyable.vue';
-import { isNotThrowing } from '@/utils/boolean';
-import { withDefaultOnError } from '@/utils/defaults';
+  import { isNotThrowing } from '@/utils/boolean';
+  import { withDefaultOnError } from '@/utils/defaults';
 
-const urlToParse = ref('https://me:pwd@it-tools.tech:3000/url-parser?key1=value&key2=value2#the-hash');
+  const urlToParse = ref('https://me:pwd@it-tools.tech:3000/url-parser?key1=value&key2=value2#the-hash');
 
-const urlParsed = computed(() => withDefaultOnError(() => new URL(urlToParse.value), undefined));
-const urlValidationRules = [
-  {
-    validator: (value: string) => isNotThrowing(() => new URL(value)),
-    message: 'Invalid url',
-  },
-];
+  const _urlParsed = computed(() => withDefaultOnError(() => new URL(urlToParse.value), undefined));
+  const _urlValidationRules = [
+    {
+      validator: (value: string) => isNotThrowing(() => new URL(value)),
+      message: 'Invalid url',
+    },
+  ];
 
-const properties: { title: string; key: keyof URL }[] = [
-  { title: 'Protocol', key: 'protocol' },
-  { title: 'Username', key: 'username' },
-  { title: 'Password', key: 'password' },
-  { title: 'Hostname', key: 'hostname' },
-  { title: 'Port', key: 'port' },
-  { title: 'Path', key: 'pathname' },
-  { title: 'Params', key: 'search' },
-];
+  const _properties: { title: string; key: keyof URL }[] = [
+    { title: 'Protocol', key: 'protocol' },
+    { title: 'Username', key: 'username' },
+    { title: 'Password', key: 'password' },
+    { title: 'Hostname', key: 'hostname' },
+    { title: 'Port', key: 'port' },
+    { title: 'Path', key: 'pathname' },
+    { title: 'Params', key: 'search' },
+  ];
 </script>
 
 <template>

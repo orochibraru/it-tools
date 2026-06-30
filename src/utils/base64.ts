@@ -1,6 +1,6 @@
 import { Base64 } from 'js-base64';
 
-export { textToBase64, base64ToText, isValidBase64, removePotentialDataAndMimePrefix };
+export { base64ToText, isValidBase64, removePotentialDataAndMimePrefix, textToBase64 };
 
 function textToBase64(str: string, { makeUrlSafe = false }: { makeUrlSafe?: boolean } = {}) {
   const encoded = Base64.encode(str);
@@ -19,8 +19,7 @@ function base64ToText(str: string, { makeUrlSafe = false }: { makeUrlSafe?: bool
 
   try {
     return Base64.decode(cleanStr);
-  }
-  catch (_) {
+  } catch (_) {
     throw new Error('Incorrect base64 string');
   }
 }
@@ -41,8 +40,7 @@ function isValidBase64(str: string, { makeUrlSafe = false }: { makeUrlSafe?: boo
       return removePotentialPadding(reEncodedBase64) === cleanStr;
     }
     return reEncodedBase64 === cleanStr.replace(/\s/g, '');
-  }
-  catch (err) {
+  } catch (_err) {
     return false;
   }
 }

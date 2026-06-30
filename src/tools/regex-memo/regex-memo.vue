@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { useThemeVars } from 'naive-ui';
-import Memo from './regex-memo.content.md';
+  import { useThemeVars } from 'naive-ui';
 
-const themeVars = useThemeVars();
+  const _themeVars = useThemeVars();
 </script>
 
 <template>

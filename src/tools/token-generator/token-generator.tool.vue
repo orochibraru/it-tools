@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { createToken } from './token-generator.service';
-import { useCopy } from '@/composable/copy';
-import { useQueryParam } from '@/composable/queryParams';
-import { computedRefreshable } from '@/composable/computedRefreshable';
+  import { computedRefreshable } from '@/composable/computedRefreshable';
+  import { useCopy } from '@/composable/copy';
+  import { useQueryParam } from '@/composable/queryParams';
+  import { createToken } from './token-generator.service';
 
-const length = useQueryParam({ name: 'length', defaultValue: 64 });
-const withUppercase = useQueryParam({ name: 'uppercase', defaultValue: true });
-const withLowercase = useQueryParam({ name: 'lowercase', defaultValue: true });
-const withNumbers = useQueryParam({ name: 'numbers', defaultValue: true });
-const withSymbols = useQueryParam({ name: 'symbols', defaultValue: false });
-const { t } = useI18n();
+  const length = useQueryParam({ name: 'length', defaultValue: 64 });
+  const withUppercase = useQueryParam({ name: 'uppercase', defaultValue: true });
+  const withLowercase = useQueryParam({ name: 'lowercase', defaultValue: true });
+  const withNumbers = useQueryParam({ name: 'numbers', defaultValue: true });
+  const withSymbols = useQueryParam({ name: 'symbols', defaultValue: false });
+  const { t } = useI18n();
 
-const [token, refreshToken] = computedRefreshable(() =>
-  createToken({
-    length: length.value,
-    withUppercase: withUppercase.value,
-    withLowercase: withLowercase.value,
-    withNumbers: withNumbers.value,
-    withSymbols: withSymbols.value,
-  }),
-);
+  const [token, _refreshToken] = computedRefreshable(() =>
+    createToken({
+      length: length.value,
+      withUppercase: withUppercase.value,
+      withLowercase: withLowercase.value,
+      withNumbers: withNumbers.value,
+      withSymbols: withSymbols.value,
+    }),
+  );
 
-const { copy } = useCopy({ source: token, text: t('tools.token-generator.copied') });
+  const { copy } = useCopy({ source: token, text: t('tools.token-generator.copied') });
 </script>
 
 <template>

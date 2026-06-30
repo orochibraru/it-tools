@@ -1,15 +1,15 @@
-import { type Ref, computed, ref } from 'vue';
+import { computed, type Ref, ref } from 'vue';
 
 export { useMediaRecorder };
 
 function useMediaRecorder({ stream }: { stream: Ref<MediaStream | undefined> }): {
-  isRecordingSupported: Ref<boolean>
-  recordingState: Ref<'stopped' | 'recording' | 'paused'>
-  startRecording: () => void
-  stopRecording: () => void
-  pauseRecording: () => void
-  resumeRecording: () => void
-  onRecordAvailable: (cb: (url: string) => void) => void
+  isRecordingSupported: Ref<boolean>;
+  recordingState: Ref<'stopped' | 'recording' | 'paused'>;
+  startRecording: () => void;
+  stopRecording: () => void;
+  pauseRecording: () => void;
+  resumeRecording: () => void;
+  onRecordAvailable: (cb: (url: string) => void) => void;
 } {
   const isRecordingSupported = computed(() => MediaRecorder.isTypeSupported('video/webm'));
   const mediaRecorder = ref<MediaRecorder | null>(null);

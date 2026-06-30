@@ -1,21 +1,20 @@
 <script setup lang="ts">
-import markdownit from 'markdown-it';
-import TextareaCopyable from '@/components/TextareaCopyable.vue';
+  import markdownit from 'markdown-it';
 
-const inputMarkdown = ref('');
-const outputHtml = computed(() => {
-  const md = markdownit();
-  return md.render(inputMarkdown.value);
-});
+  const inputMarkdown = ref('');
+  const outputHtml = computed(() => {
+    const md = markdownit();
+    return md.render(inputMarkdown.value);
+  });
 
-function printHtml() {
-  const w = window.open();
-  if (w === null) {
-    return;
+  function _printHtml() {
+    const w = window.open();
+    if (w === null) {
+      return;
+    }
+    w.document.body.innerHTML = outputHtml.value;
+    w.print();
   }
-  w.document.body.innerHTML = outputHtml.value;
-  w.print();
-}
 </script>
 
 <template>

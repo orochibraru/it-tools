@@ -24,6 +24,7 @@ describe('error util', () => {
         }),
       ).to.equal('message');
 
+      // biome-ignore lint/suspicious/noEmptyBlockStatements: testing
       expect(getErrorMessageIfThrows(() => {})).to.equal(undefined);
     });
   });
